@@ -38,13 +38,18 @@ class Login extends Component {
     const { email, name } = this.state;
     setToken(token);
     setUser({ email, name });
-    history.push('/play');
+    history.push('/game');
+  }
+
+  handleClick = () => {
+    const { history } = this.props;
+    history.push('/settings');
   }
 
   render() {
     const { email, name, isDisabled } = this.state;
     return (
-      <header className="App-header">
+      <div className="App-header">
         <img src={ logo } className="App-logo" alt="logo" />
         <form onSubmit={ this.handleSubmit }>
           <label htmlFor="name">
@@ -77,7 +82,14 @@ class Login extends Component {
             Play
           </button>
         </form>
-      </header>
+        <button
+          type="button"
+          data-testid="btn-settings"
+          onClick={ this.handleClick }
+        >
+          Settings
+        </button>
+      </div>
     );
   }
 }
