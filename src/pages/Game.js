@@ -96,14 +96,13 @@ class Game extends Component {
     return sortedAnswers;
   }
 
-
   onClickAnswered = () => {
     this.setState({ answered: false });
   }
 
   render() {
     const { arrayQuest, loading, answered } = this.state;
-    const {round, history } = this.props;
+    const { round, history } = this.props;
     return (
       <div>
         <Header />
@@ -111,15 +110,15 @@ class Game extends Component {
           ? <p>carregando</p>
           : (
             <div>
-                {answered ? (
-                  <NextButton
-                    arrayQuest={ arrayQuest }
-                    history={ history }
-                    onClickAnswered={ this.onClickAnswered }
-                  />
-                ) : (
-                  <Timer answered={ answered } />
-                )}
+              {answered ? (
+                <NextButton
+                  arrayQuest={ arrayQuest }
+                  history={ history }
+                  onClickAnswered={ this.onClickAnswered }
+                />
+              ) : (
+                <Timer answered={ answered } />
+              )}
               <h2 data-testid="question-category">{arrayQuest[round].category}</h2>
               <h3 data-testid="question-text">{arrayQuest[round].question}</h3>
 

@@ -36,6 +36,7 @@ NextButton.propTypes = {
   nextButton: PropTypes.func.isRequired,
   history: PropTypes.shape(PropTypes.object).isRequired,
   onClickAnswered: PropTypes.func.isRequired,
+  arrayQuest: PropTypes.arrayOf().isRequired,
 };
 
 const mapStateToProps = (state) => ({
