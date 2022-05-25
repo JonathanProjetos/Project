@@ -5,11 +5,12 @@ import { actionNextQuestion } from '../redux/actions/index';
 
 class NextButton extends Component {
   HandleClickNextButton = () => {
-    const { arrayQuest, round, nextButton, onClickAnswered } = this.props;
-    if (round < arrayQuest.length - 1) {
+    const { round, nextButton, onClickAnswered } = this.props;
+    const NUMBER = 4;
+    if (round <= NUMBER) {
       nextButton();
     }
-    if (round === arrayQuest.length - 1) {
+    if (round === NUMBER) {
       const { history } = this.props;
       history.push('/feedback');
     }
