@@ -1,4 +1,4 @@
-import { SET_TOKEN, SET_USER, TIME_OVER } from '../actions';
+import { SET_TOKEN, SET_USER, TIME_OVER, ASSERTIONS } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
@@ -23,6 +23,11 @@ const playerReducer = (state = INITIAL_STATE, action) => {
   case TIME_OVER:
     return {
       ...state, timeOut: !state.timeOut,
+    };
+  case ASSERTIONS:
+    return {
+      ...state,
+      assertions: state.assertions + 1,
     };
   default:
     return state;

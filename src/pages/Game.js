@@ -5,6 +5,7 @@ import Header from '../componets/Header';
 import fetchQuest from '../helper/fetchQuest';
 import '../css/game.css';
 import Timer from '../componets/Timer';
+import { clickAssertions } from '../redux/actions/index';
 
 class Game extends Component {
   constructor() {
@@ -36,10 +37,18 @@ class Game extends Component {
     }
   }
 
-  handleClick = () => {
+  handleClick = ({ target }) => {
+    const { rightAnswer } = this.props;
     this.setState({
       answered: true,
     });
+    console.log(target.className);
+    if (target.className === 'correct') {
+      rightAnswer();
+    }
+    this.setState((prev) => ({
+      index: prev.index + 1,
+    }));
   };
 
   answers = () => {
@@ -101,10 +110,15 @@ class Game extends Component {
 Game.propTypes = {
   history: PropTypes.shape(PropTypes.object).isRequired,
   isTimeOut: PropTypes.bool.isRequired,
+  rightAnswer: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   isTimeOut: state.player.timeOut,
 });
 
-export default connect(mapStateToProps)(Game);
+const mapDispatchToProps = (dispatch) => ({
+  rightAnswer: () => dispatch(clickAssertions()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Game);
