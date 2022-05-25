@@ -5,7 +5,7 @@ import Header from '../componets/Header';
 import fetchQuest from '../helper/fetchQuest';
 import '../css/game.css';
 import Timer from '../componets/Timer';
-import { clickAssertions, actionRenderButton } from '../redux/actions/index';
+import { clickAssertions, actionRenderButton, actionScore } from '../redux/actions/index';
 import NextButton from '../componets/NextButton';
 
 class Game extends Component {
@@ -37,14 +37,28 @@ class Game extends Component {
     }
   }
 
+  calculateScore = () => {
+    const { upTimer, getScore, setScore, round } = this.props;
+    const { arrayQuest } = this.state;
+    const level = arrayQuest[round].difficulty;
+    console.log(level);
+    let numDifficulty;
+    if (level === 'hard') numDifficulty = (2 + 1);
+    if (level === 'medium') numDifficulty = 2;
+    if (level === 'easy') numDifficulty = 1;
+    const HIT = 10;
+    const score = getScore + HIT + (upTimer * numDifficulty);
+    setScore(score);
+  }
+
   handleClick = ({ target }) => {
     const { rightAnswer, renderButton } = this.props;
     this.setState({
       answered: true,
     });
-    console.log(target.className);
-    if (target.className === 'correct') {
+    if (target.name === 'correct') {
       rightAnswer();
+      this.calculateScore();
     }
     renderButton();
   };
@@ -55,6 +69,7 @@ class Game extends Component {
     const correctAnswer = (
       <button
         data-testid="correct-answer"
+        name="correct"
         type="button"
         className={ answered ? borderCorrect : '' }
         onClick={ this.handleClick }
@@ -78,12 +93,12 @@ class Game extends Component {
 
     const AnswersArr = [...incorrectAnswers, correctAnswer];
     const SHUFFLE = 0.5;
-    const sortedAnswers = AnswersArr.sort(() => SHUFFLE - Math.random());
+    const sortedAnswers = AnswersArr.sort(() => Math.random() - SHUFFLE);
     return sortedAnswers;
   }
 
   render() {
-    const { arrayQuest, loading } = this.state;
+    const { arrayQuest, loading, answered } = this.state;
     const { isButtonRender, round } = this.props;
     return (
       <div>
@@ -92,11 +107,12 @@ class Game extends Component {
           ? <p>carregando</p>
           : (
             <div>
-              <Timer />
+              <Timer answered={ answered } />
               <h2 data-testid="question-category">{arrayQuest[round].category}</h2>
               <h3 data-testid="question-text">{arrayQuest[round].question}</h3>
+
               <div data-testid="answer-options">
-                { this.answers().map((answer) => (answer))}
+                { this.answers().map((answer) => (answer)) }
               </div>
               <div>
                 {isButtonRender && (
@@ -116,6 +132,9 @@ Game.propTypes = {
   history: PropTypes.shape(PropTypes.object).isRequired,
   isTimeOut: PropTypes.bool.isRequired,
   rightAnswer: PropTypes.func.isRequired,
+  setScore: PropTypes.func.isRequired,
+  upTimer: PropTypes.number.isRequired,
+  getScore: PropTypes.number.isRequired,
   renderButton: PropTypes.func.isRequired,
   isButtonRender: PropTypes.bool.isRequired,
   round: PropTypes.func.isRequired,
@@ -123,12 +142,15 @@ Game.propTypes = {
 
 const mapStateToProps = (state) => ({
   isTimeOut: state.player.timeOut,
+  upTimer: state.player.timer,
+  getScore: state.player.score,
   round: state.player.round,
   isButtonRender: state.player.isButtonRender,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   rightAnswer: () => dispatch(clickAssertions()),
+  setScore: (score) => dispatch(actionScore(score)),
   renderButton: () => dispatch(actionRenderButton()),
 });
 
