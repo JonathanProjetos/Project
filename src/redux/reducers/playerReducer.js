@@ -1,5 +1,8 @@
-import { SET_TOKEN,
-  SET_USER, TIME_OVER, ASSERTIONS, SET_TIMER, SET_SCORE } from '../actions';
+import {
+  SET_TOKEN,
+  SET_USER, TIME_OVER,
+  ASSERTIONS, NEXT_GAME,
+  RENDER_BUTTON, SET_TIMER, SET_SCORE } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
@@ -9,6 +12,9 @@ const INITIAL_STATE = {
   token: '',
   timeOut: false,
   timer: 30,
+  round: 0,
+  isButtonRender: false,
+
 };
 
 const playerReducer = (state = INITIAL_STATE, action) => {
@@ -26,6 +32,11 @@ const playerReducer = (state = INITIAL_STATE, action) => {
     return {
       ...state, timeOut: !state.timeOut,
     };
+  case RENDER_BUTTON:
+    return {
+      ...state,
+      isButtonRender: true,
+    };
   case ASSERTIONS:
     return {
       ...state,
@@ -38,6 +49,12 @@ const playerReducer = (state = INITIAL_STATE, action) => {
   case SET_SCORE:
     return {
       ...state, score: action.payload,
+    };
+  case NEXT_GAME:
+    return {
+      ...state,
+      round: state.round + 1,
+      isButtonRender: false,
     };
   default:
     return state;
