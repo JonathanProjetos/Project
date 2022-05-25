@@ -33,22 +33,18 @@ class Login extends Component {
 
   handleSubmit = async (e) => {
     e.preventDefault();
-    const { setToken, setUser } = this.props;
+    const { setToken, setUser, history } = this.props;
     const token = await fetchToken();
     const { email, name } = this.state;
     setToken(token);
     setUser({ email, name });
+    history.push('/game');
   }
 
   handleClick = () => {
     const { history } = this.props;
     history.push('/settings');
     console.log(history);
-  }
-
-  handleClickGame = () => {
-    const { history } = this.props;
-    history.push('/game');
   }
 
   render() {
@@ -83,7 +79,6 @@ class Login extends Component {
             type="submit"
             data-testid="btn-play"
             disabled={ isDisabled }
-            onClick={ this.handleClickGame }
           >
             Play
           </button>
