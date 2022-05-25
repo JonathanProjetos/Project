@@ -1,4 +1,5 @@
-import { SET_TOKEN, SET_USER, TIME_OVER, ASSERTIONS } from '../actions';
+import { SET_TOKEN,
+  SET_USER, TIME_OVER, ASSERTIONS, SET_TIMER, SET_SCORE } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
@@ -7,6 +8,7 @@ const INITIAL_STATE = {
   gravatarEmail: '',
   token: '',
   timeOut: false,
+  timer: 30,
 };
 
 const playerReducer = (state = INITIAL_STATE, action) => {
@@ -28,6 +30,14 @@ const playerReducer = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       assertions: state.assertions + 1,
+    };
+  case SET_TIMER:
+    return {
+      ...state, timer: action.payload,
+    };
+  case SET_SCORE:
+    return {
+      ...state, score: action.payload,
     };
   default:
     return state;
