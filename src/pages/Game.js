@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../componets/Header';
 import fetchQuest from '../helper/fetchQuest';
+import '../css/game.css';
 
 class Game extends Component {
   constructor() {
@@ -12,6 +13,8 @@ class Game extends Component {
       arrayQuest: [],
       index: 0,
       loading: true,
+      borderCorrect: '',
+      borderIncorrect: '',
     };
   }
 
@@ -31,13 +34,22 @@ class Game extends Component {
     }
   }
 
+  handleClick = () => {
+    this.setState({
+      borderCorrect: 'correct',
+      borderIncorrect: 'incorrect',
+    });
+  };
+
   answers = () => {
-    const { arrayQuest, index } = this.state;
+    const { arrayQuest, index, borderCorrect, borderIncorrect } = this.state;
 
     const correctAnswer = (
       <button
         data-testid="correct-answer"
         type="button"
+        className={ borderCorrect }
+        onClick={ this.handleClick }
       >
         {arrayQuest[index].correct_answer}
       </button>
@@ -47,6 +59,8 @@ class Game extends Component {
         key={ answer }
         type="button"
         data-testid={ `wrong-answer-${id}` }
+        className={ borderIncorrect }
+        onClick={ this.handleClick }
       >
         {answer}
       </button>
