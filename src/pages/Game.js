@@ -5,7 +5,8 @@ import Header from '../componets/Header';
 import fetchQuest from '../helper/fetchQuest';
 import '../css/game.css';
 import Timer from '../componets/Timer';
-import { clickAssertions } from '../redux/actions/index';
+import { clickAssertions, actionRenderButton } from '../redux/actions/index';
+import NextButton from '../componets/NextButton';
 
 class Game extends Component {
   constructor() {
@@ -13,7 +14,6 @@ class Game extends Component {
 
     this.state = {
       arrayQuest: [],
-      index: 0,
       answered: false,
       loading: true,
       borderCorrect: 'correct',
@@ -38,7 +38,7 @@ class Game extends Component {
   }
 
   handleClick = ({ target }) => {
-    const { rightAnswer } = this.props;
+    const { rightAnswer, renderButton } = this.props;
     this.setState({
       answered: true,
     });
@@ -46,14 +46,12 @@ class Game extends Component {
     if (target.className === 'correct') {
       rightAnswer();
     }
-    this.setState((prev) => ({
-      index: prev.index + 1,
-    }));
+    renderButton();
   };
 
   answers = () => {
-    const { arrayQuest, index, borderCorrect, borderIncorrect, answered } = this.state;
-    const { isTimeOut } = this.props;
+    const { arrayQuest, borderCorrect, borderIncorrect, answered } = this.state;
+    const { isTimeOut, round } = this.props;
     const correctAnswer = (
       <button
         data-testid="correct-answer"
@@ -62,10 +60,10 @@ class Game extends Component {
         onClick={ this.handleClick }
         disabled={ isTimeOut }
       >
-        {arrayQuest[index].correct_answer}
+        {arrayQuest[round].correct_answer}
       </button>
     );
-    const incorrectAnswers = arrayQuest[index].incorrect_answers.map((answer, id) => (
+    const incorrectAnswers = arrayQuest[round].incorrect_answers.map((answer, id) => (
       <button
         key={ answer }
         type="button"
@@ -81,12 +79,12 @@ class Game extends Component {
     const AnswersArr = [...incorrectAnswers, correctAnswer];
     const SHUFFLE = 0.5;
     const sortedAnswers = AnswersArr.sort(() => SHUFFLE - Math.random());
-
     return sortedAnswers;
   }
 
   render() {
-    const { arrayQuest, index, loading } = this.state;
+    const { arrayQuest, loading } = this.state;
+    const { isButtonRender, round } = this.props;
     return (
       <div>
         <Header />
@@ -95,10 +93,17 @@ class Game extends Component {
           : (
             <div>
               <Timer />
-              <h2 data-testid="question-category">{arrayQuest[index].category}</h2>
-              <h3 data-testid="question-text">{arrayQuest[index].question}</h3>
+              <h2 data-testid="question-category">{arrayQuest[round].category}</h2>
+              <h3 data-testid="question-text">{arrayQuest[round].question}</h3>
               <div data-testid="answer-options">
                 { this.answers().map((answer) => (answer))}
+              </div>
+              <div>
+                {isButtonRender && (
+                  <NextButton
+                    arrayQuest={ arrayQuest }
+                  />
+                )}
               </div>
             </div>
           )}
@@ -111,14 +116,20 @@ Game.propTypes = {
   history: PropTypes.shape(PropTypes.object).isRequired,
   isTimeOut: PropTypes.bool.isRequired,
   rightAnswer: PropTypes.func.isRequired,
+  renderButton: PropTypes.func.isRequired,
+  isButtonRender: PropTypes.bool.isRequired,
+  round: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   isTimeOut: state.player.timeOut,
+  round: state.player.round,
+  isButtonRender: state.player.isButtonRender,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   rightAnswer: () => dispatch(clickAssertions()),
+  renderButton: () => dispatch(actionRenderButton()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
