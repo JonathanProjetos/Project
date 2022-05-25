@@ -38,7 +38,7 @@ class Game extends Component {
   }
 
   handleClick = ({ target }) => {
-    const { rightAnswer } = this.props;
+    const { rightAnswer, history } = this.props;
     this.setState({
       answered: true,
     });
@@ -49,6 +49,7 @@ class Game extends Component {
     this.setState((prev) => ({
       index: prev.index + 1,
     }));
+    history.push('/feedback');
   };
 
   answers = () => {
