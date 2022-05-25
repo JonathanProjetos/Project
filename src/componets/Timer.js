@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { timeOver } from '../redux/actions';
+import { timeOver, setTimer } from '../redux/actions';
 
 class Timer extends Component {
   constructor() {
@@ -18,7 +18,11 @@ class Timer extends Component {
 
   componentDidUpdate() {
     const { timer } = this.state;
-    const { timeOutSet } = this.props;
+    const { timeOutSet, upTimer, answered } = this.props;
+    if (answered) {
+      clearInterval(this.countInterval);
+      upTimer(timer);
+    }
     if (timer === 0) {
       clearInterval(this.countInterval);
       timeOutSet();
@@ -44,10 +48,14 @@ class Timer extends Component {
 
 Timer.propTypes = {
   timeOutSet: PropTypes.func.isRequired,
+  upTimer: PropTypes.func.isRequired,
+  answered: PropTypes.bool.isRequired,
+
 };
 
 const mapDispatchToProps = (dispatch) => ({
   timeOutSet: () => dispatch(timeOver()),
+  upTimer: (timer) => dispatch(setTimer(timer)),
 });
 
 export default connect(null, mapDispatchToProps)(Timer);
