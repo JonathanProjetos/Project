@@ -1,4 +1,4 @@
-import { SET_TOKEN, SET_USER } from '../actions';
+import { SET_TOKEN, SET_USER, TIME_OVER } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
@@ -6,6 +6,7 @@ const INITIAL_STATE = {
   score: 0,
   gravatarEmail: '',
   token: '',
+  timeOut: false,
 };
 
 const playerReducer = (state = INITIAL_STATE, action) => {
@@ -18,6 +19,10 @@ const playerReducer = (state = INITIAL_STATE, action) => {
     localStorage.setItem('token', action.payload);
     return {
       ...state, token: action.payload,
+    };
+  case TIME_OVER:
+    return {
+      ...state, timeOut: !state.timeOut,
     };
   default:
     return state;

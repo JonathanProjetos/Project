@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Header from '../componets/Header';
 import fetchQuest from '../helper/fetchQuest';
 import '../css/game.css';
+import Timer from '../componets/Timer';
 
 class Game extends Component {
   constructor() {
@@ -12,9 +13,10 @@ class Game extends Component {
     this.state = {
       arrayQuest: [],
       index: 0,
+      answered: false,
       loading: true,
-      borderCorrect: '',
-      borderIncorrect: '',
+      borderCorrect: 'correct',
+      borderIncorrect: 'incorrect',
     };
   }
 
@@ -36,20 +38,20 @@ class Game extends Component {
 
   handleClick = () => {
     this.setState({
-      borderCorrect: 'correct',
-      borderIncorrect: 'incorrect',
+      answered: true,
     });
   };
 
   answers = () => {
-    const { arrayQuest, index, borderCorrect, borderIncorrect } = this.state;
-
+    const { arrayQuest, index, borderCorrect, borderIncorrect, answered } = this.state;
+    const { isTimeOut } = this.props;
     const correctAnswer = (
       <button
         data-testid="correct-answer"
         type="button"
-        className={ borderCorrect }
+        className={ answered ? borderCorrect : '' }
         onClick={ this.handleClick }
+        disabled={ isTimeOut }
       >
         {arrayQuest[index].correct_answer}
       </button>
@@ -58,8 +60,9 @@ class Game extends Component {
       <button
         key={ answer }
         type="button"
+        disabled={ isTimeOut }
         data-testid={ `wrong-answer-${id}` }
-        className={ borderIncorrect }
+        className={ answered ? borderIncorrect : '' }
         onClick={ this.handleClick }
       >
         {answer}
@@ -75,7 +78,6 @@ class Game extends Component {
 
   render() {
     const { arrayQuest, index, loading } = this.state;
-
     return (
       <div>
         <Header />
@@ -83,10 +85,11 @@ class Game extends Component {
           ? <p>carregando</p>
           : (
             <div>
+              <Timer />
               <h2 data-testid="question-category">{arrayQuest[index].category}</h2>
               <h3 data-testid="question-text">{arrayQuest[index].question}</h3>
               <div data-testid="answer-options">
-                {this.answers().map((answer) => (answer))}
+                { this.answers().map((answer) => (answer))}
               </div>
             </div>
           )}
@@ -97,6 +100,11 @@ class Game extends Component {
 
 Game.propTypes = {
   history: PropTypes.shape(PropTypes.object).isRequired,
+  isTimeOut: PropTypes.bool.isRequired,
 };
 
-export default connect()(Game);
+const mapStateToProps = (state) => ({
+  isTimeOut: state.player.timeOut,
+});
+
+export default connect(mapStateToProps)(Game);
