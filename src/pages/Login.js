@@ -33,8 +33,8 @@ class Login extends Component {
 
   handleSubmit = async (e) => {
     e.preventDefault();
+    const { setToken, setUser, history } = this.props;
     const token = await fetchToken();
-    const { setToken, history, setUser } = this.props;
     const { email, name } = this.state;
     setToken(token);
     setUser({ email, name });
@@ -44,6 +44,7 @@ class Login extends Component {
   handleClick = () => {
     const { history } = this.props;
     history.push('/settings');
+    console.log(history);
   }
 
   render() {
