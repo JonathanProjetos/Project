@@ -13,6 +13,6 @@ class Feedback extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  
-})
+  rightAnswer: state.Player.assertions,
+});
 export default connect(mapStateToProps)(Feedback);
