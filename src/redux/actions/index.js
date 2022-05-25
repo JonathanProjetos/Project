@@ -1,6 +1,7 @@
 export const SET_TOKEN = 'SET_TOKEN';
 export const SET_USER = 'SET_USER';
 export const TIME_OVER = 'TIME_OVER';
+export const ASSERTIONS = 'ASSERTIONS';
 
 export const actionSetUser = ({ name, email }) => ({
   type: SET_USER,
@@ -17,4 +18,8 @@ export const actionSetTokem = (token) => ({
 
 export const timeOver = () => ({
   type: TIME_OVER,
+});
+
+export const clickAssertions = () => ({
+  type: ASSERTIONS,
 });
