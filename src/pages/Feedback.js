@@ -14,7 +14,7 @@ class Feedback extends Component {
         </header>
         <section>
           {
-            rightAnswer <= NUMBER_THREE ? (
+            rightAnswer < NUMBER_THREE ? (
               <h1 data-testid="feedback-text">Could be better...</h1>
             ) : (
               <h1 data-testid="feedback-text">Well Done!</h1>
