@@ -5,10 +5,15 @@ import { actionNextQuestion } from '../redux/actions/index';
 
 class NextButton extends Component {
   HandleClickNextButton = () => {
-    const { arrayQuest, round, nextButton } = this.props;
+    const { arrayQuest, round, nextButton, onClickAnswered } = this.props;
     if (round < arrayQuest.length - 1) {
       nextButton();
     }
+    if (round === arrayQuest.length - 1) {
+      const { history } = this.props;
+      history.push('/feedback');
+    }
+    onClickAnswered();
   }
 
   render() {
@@ -30,6 +35,8 @@ NextButton.propTypes = {
   arrayQuest: PropTypes.shape(PropTypes.any).isRequired,
   round: PropTypes.number.isRequired,
   nextButton: PropTypes.func.isRequired,
+  history: PropTypes.shape(PropTypes.object).isRequired,
+  onClickAnswered: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
