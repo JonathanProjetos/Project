@@ -5,9 +5,17 @@ import { actionNextQuestion } from '../redux/actions/index';
 
 class NextButton extends Component {
   HandleClickNextButton = () => {
-    const { arrayQuest, round, nextButton } = this.props;
-    if (round < arrayQuest.length - 1) {
+    const { clickNext } = this.props;
+    clickNext();
+    const { round, nextButton, history } = this.props;
+
+    const NUMBER = 4;
+    if (round <= NUMBER) {
       nextButton();
+    }
+    if (round === NUMBER) {
+      console.log('entrou no if');
+      history.push('/feedback');
     }
   }
 
@@ -27,9 +35,10 @@ class NextButton extends Component {
 }
 
 NextButton.propTypes = {
-  arrayQuest: PropTypes.shape(PropTypes.any).isRequired,
   round: PropTypes.number.isRequired,
   nextButton: PropTypes.func.isRequired,
+  clickNext: PropTypes.func.isRequired,
+  history: PropTypes.shape(PropTypes.object).isRequired,
 };
 
 const mapStateToProps = (state) => ({

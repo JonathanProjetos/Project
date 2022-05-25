@@ -5,7 +5,7 @@ import Header from '../componets/Header';
 import fetchQuest from '../helper/fetchQuest';
 import '../css/game.css';
 import Timer from '../componets/Timer';
-import { clickAssertions, actionRenderButton, actionScore } from '../redux/actions/index';
+import { clickAssertions, actionScore } from '../redux/actions/index';
 import NextButton from '../componets/NextButton';
 
 class Game extends Component {
@@ -52,7 +52,7 @@ class Game extends Component {
   }
 
   handleClick = ({ target }) => {
-    const { rightAnswer, renderButton } = this.props;
+    const { rightAnswer } = this.props;
     this.setState({
       answered: true,
     });
@@ -60,7 +60,6 @@ class Game extends Component {
       rightAnswer();
       this.calculateScore();
     }
-    renderButton();
   };
 
   answers = () => {
@@ -97,9 +96,13 @@ class Game extends Component {
     return sortedAnswers;
   }
 
+  clickNext = () => {
+    this.setState({ answered: false });
+  }
+
   render() {
     const { arrayQuest, loading, answered } = this.state;
-    const { isButtonRender, round } = this.props;
+    const { round, history } = this.props;
     return (
       <div>
         <Header />
@@ -107,19 +110,19 @@ class Game extends Component {
           ? <p>carregando</p>
           : (
             <div>
-              <Timer answered={ answered } />
+              {answered
+                ? (
+                  <NextButton
+                    clickNext={ this.clickNext }
+                    arrayQuest={ arrayQuest }
+                    history={ history }
+                  />)
+                : <Timer answered={ answered } /> }
               <h2 data-testid="question-category">{arrayQuest[round].category}</h2>
               <h3 data-testid="question-text">{arrayQuest[round].question}</h3>
 
               <div data-testid="answer-options">
                 { this.answers().map((answer) => (answer)) }
-              </div>
-              <div>
-                {isButtonRender && (
-                  <NextButton
-                    arrayQuest={ arrayQuest }
-                  />
-                )}
               </div>
             </div>
           )}
@@ -135,8 +138,6 @@ Game.propTypes = {
   setScore: PropTypes.func.isRequired,
   upTimer: PropTypes.number.isRequired,
   getScore: PropTypes.number.isRequired,
-  renderButton: PropTypes.func.isRequired,
-  isButtonRender: PropTypes.bool.isRequired,
   round: PropTypes.func.isRequired,
 };
 
@@ -145,13 +146,11 @@ const mapStateToProps = (state) => ({
   upTimer: state.player.timer,
   getScore: state.player.score,
   round: state.player.round,
-  isButtonRender: state.player.isButtonRender,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   rightAnswer: () => dispatch(clickAssertions()),
   setScore: (score) => dispatch(actionScore(score)),
-  renderButton: () => dispatch(actionRenderButton()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
