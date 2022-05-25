@@ -96,6 +96,7 @@ class Game extends Component {
     return sortedAnswers;
   }
 
+
   onClickAnswered = () => {
     this.setState({ answered: false });
   }
@@ -125,9 +126,6 @@ class Game extends Component {
               <div data-testid="answer-options">
                 { this.answers().map((answer) => (answer)) }
               </div>
-              <div>
-
-              </div>
             </div>
           )}
       </div>
@@ -150,7 +148,6 @@ const mapStateToProps = (state) => ({
   upTimer: state.player.timer,
   getScore: state.player.score,
   round: state.player.round,
-  isButtonRender: state.player.isButtonRender,
 });
 
 const mapDispatchToProps = (dispatch) => ({

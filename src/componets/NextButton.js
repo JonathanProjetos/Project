@@ -32,7 +32,6 @@ class NextButton extends Component {
 }
 
 NextButton.propTypes = {
-  arrayQuest: PropTypes.shape(PropTypes.any).isRequired,
   round: PropTypes.number.isRequired,
   nextButton: PropTypes.func.isRequired,
   history: PropTypes.shape(PropTypes.object).isRequired,
