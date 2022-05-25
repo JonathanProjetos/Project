@@ -8,7 +8,6 @@ import Timer from '../componets/Timer';
 import { clickAssertions, actionRenderButton, actionScore } from '../redux/actions/index';
 import NextButton from '../componets/NextButton';
 
-
 class Game extends Component {
   constructor() {
     super();
@@ -39,9 +38,9 @@ class Game extends Component {
   }
 
   calculateScore = () => {
-    const { upTimer, getScore, setScore } = this.props;
-    const { arrayQuest, index } = this.state;
-    const level = arrayQuest[index].difficulty;
+    const { upTimer, getScore, setScore, round } = this.props;
+    const { arrayQuest } = this.state;
+    const level = arrayQuest[round].difficulty;
     console.log(level);
     let numDifficulty;
     if (level === 'hard') numDifficulty = (2 + 1);
@@ -99,7 +98,7 @@ class Game extends Component {
   }
 
   render() {
-    const { arrayQuest, index, loading, answered } = this.state;
+    const { arrayQuest, loading, answered } = this.state;
     const { isButtonRender, round } = this.props;
     return (
       <div>

@@ -7,7 +7,6 @@ export const SET_SCORE = 'SET_SCORE';
 export const NEXT_GAME = 'NEXT_GAME';
 export const RENDER_BUTTON = 'RENDER_BUTTON';
 
-
 export const actionSetUser = ({ name, email }) => ({
   type: SET_USER,
   payload: {
