@@ -6,6 +6,8 @@ export const SET_TIMER = 'SET_TIMER';
 export const SET_SCORE = 'SET_SCORE';
 export const NEXT_GAME = 'NEXT_GAME';
 export const RENDER_BUTTON = 'RENDER_BUTTON';
+export const RESET_STATE = 'RESET_STATE';
+export const SET_PICTURE = 'SET_PICTURE';
 
 export const actionSetUser = ({ name, email }) => ({
   type: SET_USER,
@@ -44,4 +46,13 @@ export const actionNextQuestion = () => ({
 
 export const actionRenderButton = () => ({
   type: RENDER_BUTTON,
+});
+
+export const resetState = () => ({
+  type: RESET_STATE,
+});
+
+export const actionPicture = (picture) => ({
+  type: SET_PICTURE,
+  payload: picture,
 });
