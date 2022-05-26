@@ -76,12 +76,12 @@ class Game extends Component {
         {arrayQuest[round].correct_answer}
       </button>
     );
-    const incorrectAnswers = arrayQuest[round].incorrect_answers.map((answer, id) => (
+    const incorrectAnswers = arrayQuest[round].incorrect_answers.map((answer, index) => (
       <button
-        key={ answer }
+        key={ index }
         type="button"
         disabled={ isTimeOut }
-        data-testid={ `wrong-answer-${id}` }
+        data-testid={ `wrong-answer-${index}` }
         className={ answered ? borderIncorrect : '' }
         onClick={ this.handleClick }
       >
@@ -132,13 +132,15 @@ class Game extends Component {
 }
 
 Game.propTypes = {
-  history: PropTypes.shape(PropTypes.object).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
   isTimeOut: PropTypes.bool.isRequired,
   rightAnswer: PropTypes.func.isRequired,
   setScore: PropTypes.func.isRequired,
   upTimer: PropTypes.number.isRequired,
   getScore: PropTypes.number.isRequired,
-  round: PropTypes.func.isRequired,
+  round: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({

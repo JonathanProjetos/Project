@@ -52,7 +52,7 @@ Header.propTypes = {
   userName: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
   email: PropTypes.string.isRequired,
-  setPictures: PropTypes.string.isRequired,
+  setPictures: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

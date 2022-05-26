@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { resetState } from '../redux/actions';
+import Players from '../componets/Players';
 
 class Ranking extends Component {
   render() {
@@ -9,6 +10,7 @@ class Ranking extends Component {
     return (
       <div>
         <h1 data-testid="ranking-title">ranking</h1>
+        <Players />
         <button
           type="button"
           data-testid="btn-go-home"
@@ -26,7 +28,9 @@ class Ranking extends Component {
 
 Ranking.propTypes = {
   reset: PropTypes.func.isRequired,
-  history: PropTypes.shape(PropTypes.object).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
