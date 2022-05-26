@@ -2,7 +2,7 @@ import {
   SET_TOKEN,
   SET_USER, TIME_OVER,
   ASSERTIONS, NEXT_GAME,
-  RENDER_BUTTON, SET_TIMER, SET_SCORE } from '../actions';
+  RENDER_BUTTON, SET_TIMER, SET_SCORE, RESET_STATE, SET_PICTURE } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
@@ -13,8 +13,8 @@ const INITIAL_STATE = {
   timeOut: false,
   timer: 30,
   round: 0,
+  picture: '',
   isButtonRender: false,
-
 };
 
 const playerReducer = (state = INITIAL_STATE, action) => {
@@ -56,6 +56,13 @@ const playerReducer = (state = INITIAL_STATE, action) => {
       round: state.round + 1,
       isButtonRender: false,
     };
+  case SET_PICTURE:
+    return {
+      ...state,
+      picture: action.payload,
+    };
+  case RESET_STATE:
+    return INITIAL_STATE;
   default:
     return state;
   }
