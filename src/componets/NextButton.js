@@ -41,7 +41,9 @@ NextButton.propTypes = {
   userName: PropTypes.string.isRequired,
   picture: PropTypes.string.isRequired,
   nextButton: PropTypes.func.isRequired,
-  history: PropTypes.shape(PropTypes.object).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
   onClickAnswered: PropTypes.func.isRequired,
 };
 
