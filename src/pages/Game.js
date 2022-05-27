@@ -41,7 +41,6 @@ class Game extends Component {
     const { upTimer, getScore, setScore, round } = this.props;
     const { arrayQuest } = this.state;
     const level = arrayQuest[round].difficulty;
-    console.log(level);
     let numDifficulty;
     if (level === 'hard') numDifficulty = (2 + 1);
     if (level === 'medium') numDifficulty = 2;
