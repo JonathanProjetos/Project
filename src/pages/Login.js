@@ -44,7 +44,6 @@ class Login extends Component {
   handleClick = () => {
     const { history } = this.props;
     history.push('/settings');
-    console.log(history);
   }
 
   render() {
