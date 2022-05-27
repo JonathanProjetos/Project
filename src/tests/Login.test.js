@@ -40,7 +40,7 @@ describe('Testa as funcionalidades do pagina login',() => {
 
     const buttonPlay = screen.getByTestId('btn-play');
     expect(buttonPlay).toBeInTheDocument();
-    console.log(buttonPlay);
+  
     userEvent.click(buttonPlay);
     await waitFor( ()=> expect(history.location.pathname).toBe('/game') )
   
