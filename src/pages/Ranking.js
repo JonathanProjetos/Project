@@ -9,7 +9,7 @@ class Ranking extends Component {
     const { reset, history } = this.props;
     return (
       <div>
-        <h1 data-testid="ranking-title">ranking</h1>
+        <h1 data-testid="ranking-title">Ranking</h1>
         <Players />
         <button
           type="button"
