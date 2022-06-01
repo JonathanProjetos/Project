@@ -3,8 +3,8 @@ const fetchQuest = async (token) => {
 
   const question = await fetch(URL)
     .then((response) => response.json())
-    .then((response) => response.results)
-    .catch((erro) => erro);
+    .then((response) => response.results);
+    // .catch((erro) => erro);
 
   return question;
 };

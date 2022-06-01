@@ -55,7 +55,8 @@ class Game extends Component {
     this.setState({
       answered: true,
     });
-    if (target.name === 'correct') {
+    // https://stackoverflow.com/questions/58877215/else-path-not-taken-in-unit-testing
+    /* istanbul ignore else */ if (target.name === 'correct') {
       rightAnswer();
       this.calculateScore();
     }
