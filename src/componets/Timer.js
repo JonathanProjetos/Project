@@ -19,13 +19,11 @@ class Timer extends Component {
   componentDidUpdate() {
     const { timer } = this.state;
     const { timeOutSet } = this.props;
-    console.log('funciona?');
     /*  if (answered) {
      clearInterval(this.countInterval);
      upTimer(timer);
     } */
     if (timer === 0) {
-      console.log('eu não estou louco');
       clearInterval(this.countInterval);
       timeOutSet();
     }
