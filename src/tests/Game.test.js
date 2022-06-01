@@ -146,4 +146,4 @@ describe('Testar a aplicaçãoda pagina game', () => {
     await waitFor( ()=> expect(locationFeedback).toBe('/feedback') )
    });
 
-}) 
+});

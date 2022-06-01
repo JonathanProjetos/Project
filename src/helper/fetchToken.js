@@ -3,8 +3,8 @@ const fetchToken = async () => {
 
   const token = await fetch(URL)
     .then((response) => response.json())
-    .then((response) => response.token)
-    .catch((erro) => erro);
+    .then((response) => response.token);
+    // .catch((erro) => erro);
 
   return token;
 };
