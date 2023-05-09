@@ -78,7 +78,7 @@ describe('Testar a aplicaçãoda pagina game', () => {
     jest.restoreAllMocks();
    });
 
-   test('Testa a aplicação no memomento do click das perguntas', async () => { 
+   test('Testa a aplicação no momento do click das perguntas', async () => { 
     jest.spyOn(global, 'fetch');
     global.fetch.mockResolvedValue({
       json: jest.fn().mockResolvedValue(questionsResponse),
