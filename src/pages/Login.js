@@ -1,9 +1,16 @@
+/* eslint-disable react/sort-comp */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import Button from '@material-ui/core/Button';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import Box from '@material-ui/core/Box';
+import Image from '../componets/Image';
 import logo from '../trivia.png';
 import fetchToken from '../helper/fetchToken';
 import { actionSetTokem, actionSetUser } from '../redux/actions';
+import Footer from '../componets/Footer';
 
 class Login extends Component {
   constructor() {
@@ -38,6 +45,7 @@ class Login extends Component {
     const { email, name } = this.state;
     setToken(token);
     setUser({ email, name });
+    localStorage.setItem('name', name);
     history.push('/game');
   }
 
@@ -46,50 +54,107 @@ class Login extends Component {
     history.push('/settings');
   }
 
+  style = () => ({
+    style1: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'center',
+      textAlign: 'center',
+      width: '100vw',
+      height: '100vh',
+      alignItems: 'center',
+    },
+    style2: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      textAlign: 'center',
+      width: '600px',
+      height: '600px',
+      alignItems: 'center',
+      marginTop: '20px',
+    },
+    style3: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'between',
+    },
+    style4: {
+      color: 'black',
+      background: 'white',
+    },
+  })
+
   render() {
     const { email, name, isDisabled } = this.state;
     return (
-      <div className="App-header">
-        <img src={ logo } className="App-logo" alt="logo" />
-        <form onSubmit={ this.handleSubmit }>
-          <label htmlFor="name">
-            <span>Nome:</span>
-            <input
-              id="name"
-              name="name"
-              type="text"
-              data-testid="input-player-name"
-              onChange={ this.handleChange }
-              value={ name }
-            />
-          </label>
-          <label htmlFor="email">
-            <span>Email:</span>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              data-testid="input-gravatar-email"
-              onChange={ this.handleChange }
-              value={ email }
-            />
-          </label>
-          <button
-            type="submit"
-            data-testid="btn-play"
-            disabled={ isDisabled }
-          >
-            Play
-          </button>
-        </form>
-        <button
-          type="button"
-          data-testid="btn-settings"
-          onClick={ this.handleClick }
+      <Box
+        component="div"
+        sx={ {
+          ...this.style().style1,
+        } }
+      >
+        <Box
+          component="form"
+          onSubmit={ this.handleSubmit }
+          sx={ {
+            ...this.style().style2,
+          } }
         >
-          Settings
-        </button>
-      </div>
+          <Box>
+            <Image src={ logo } alt="logo" />
+          </Box>
+          <Box sx={ { ...this.style.style3, marginTop: '50px' } }>
+            <InputLabel htmlFor="name">
+              <Input
+                style={ {
+                  marginBottom: '20px',
+                  width: '300px',
+                  padding: '1px',
+                  animation: 'unset',
+                } }
+                id="name"
+                name="name"
+                type="text"
+                placeholder="Digite seu nome"
+                data-testid="input-player-name"
+                onChange={ this.handleChange }
+                value={ name }
+              />
+            </InputLabel>
+            <InputLabel htmlFor="email">
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="Digite seu email"
+                data-testid="input-gravatar-email"
+                onChange={ this.handleChange }
+                value={ email }
+                style={ {
+                  background: 'transparent',
+                  marginBottom: '20px',
+                  width: '300px',
+                  padding: '1px',
+                  textAlign: 'center',
+                } }
+              />
+            </InputLabel>
+          </Box>
+          <Box sx={ { ...this.style().style3, marginTop: '30px' } }>
+            <Button
+              style={ { background: 'black', color: 'white' } }
+              variant="contained"
+              onClick={ this.handleSubmit }
+              data-testid="btn-play"
+              disabled={ isDisabled }
+            >
+              {isDisabled ? 'Close' : 'Vamos Jogar?'}
+            </Button>
+          </Box>
+        </Box>
+        <Footer />
+      </Box>
     );
   }
 }
