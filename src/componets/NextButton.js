@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
 import { actionNextQuestion } from '../redux/actions/index';
 
 class NextButton extends Component {
@@ -24,15 +26,16 @@ class NextButton extends Component {
 
   render() {
     return (
-      <div>
-        <button
+      <Box>
+        <Button
           type="button"
           data-testid="btn-next"
+          style={ { background: 'black', color: 'white', marginTop: '50px' } }
           onClick={ this.HandleClickNextButton }
         >
           Next
-        </button>
-      </div>
+        </Button>
+      </Box>
     );
   }
 }

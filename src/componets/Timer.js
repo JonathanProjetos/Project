@@ -19,13 +19,12 @@ class Timer extends Component {
   componentDidUpdate() {
     const { timer } = this.state;
     const { timeOutSet } = this.props;
-    /*  if (answered) {
-     clearInterval(this.countInterval);
-     upTimer(timer);
-    } */
+    const { propsGame } = this.props;
+    const { history } = propsGame;
     if (timer === 0) {
       clearInterval(this.countInterval);
       timeOutSet();
+      history.push('/feedback');
     }
   }
 
@@ -48,6 +47,11 @@ class Timer extends Component {
 
 Timer.propTypes = {
   timeOutSet: PropTypes.func.isRequired,
+  propsGame: PropTypes.shape({
+    history: PropTypes.shape({
+      push: PropTypes.func.isRequired,
+    }).isRequired,
+  }).isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({

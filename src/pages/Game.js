@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 import Header from '../componets/Header';
 import fetchQuest from '../helper/fetchQuest';
 import '../css/game.css';
 import Timer from '../componets/Timer';
 import { clickAssertions, actionScore } from '../redux/actions/index';
 import NextButton from '../componets/NextButton';
+import Footer from '../componets/Footer';
 
 class Game extends Component {
   constructor() {
@@ -16,8 +20,6 @@ class Game extends Component {
       arrayQuest: [],
       answered: false,
       loading: true,
-      borderCorrect: 'correct',
-      borderIncorrect: 'incorrect',
     };
   }
 
@@ -63,31 +65,33 @@ class Game extends Component {
   };
 
   answers = () => {
-    const { arrayQuest, borderCorrect, borderIncorrect, answered } = this.state;
+    const { arrayQuest, answered } = this.state;
     const { isTimeOut, round } = this.props;
     const correctAnswer = (
-      <button
+      <Button
         data-testid="correct-answer"
         name="correct"
         type="button"
-        className={ answered ? borderCorrect : '' }
+        variant="contained"
+        style={ { background: answered ? '#35a02a' : '' } }
         onClick={ this.handleClick }
         disabled={ isTimeOut }
       >
         {arrayQuest[round].correct_answer}
-      </button>
+      </Button>
     );
     const incorrectAnswers = arrayQuest[round].incorrect_answers.map((answer, index) => (
-      <button
+      <Button
         key={ index }
         type="button"
+        variant="contained"
         disabled={ isTimeOut }
         data-testid={ `wrong-answer-${index}` }
-        className={ answered ? borderIncorrect : '' }
+        style={ { background: answered ? '#f14e31' : '' } }
         onClick={ this.handleClick }
       >
         {answer}
-      </button>
+      </Button>
     ));
 
     const AnswersArr = [...incorrectAnswers, correctAnswer];
@@ -104,30 +108,66 @@ class Game extends Component {
     const { arrayQuest, loading, answered } = this.state;
     const { round, history } = this.props;
     return (
-      <div>
+      <Box>
         <Header />
         {loading
-          ? <p>carregando</p>
+          ? <Typography>carregando</Typography>
           : (
-            <div>
-              {answered ? (
-                <NextButton
-                  arrayQuest={ arrayQuest }
-                  history={ history }
-                  onClickAnswered={ this.onClickAnswered }
-                />
-              ) : (
-                <Timer answered={ answered } />
-              )}
-              <h2 data-testid="question-category">{arrayQuest[round].category}</h2>
-              <h3 data-testid="question-text">{arrayQuest[round].question}</h3>
+            <Box
+              sx={ {
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                textAlign: 'center',
+                width: '99vw',
+                height: '80vh',
+                alignItems: 'center',
+              } }
+            >
+              <Box
+                sx={ {
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  fontSize: '50px',
+                } }
+              >
+                <Timer answered={ answered } propsGame={ this.props } />
+              </Box>
 
-              <div data-testid="answer-options">
+              <Typography
+                variant="h4"
+                data-testid="question-category"
+              >
+                {
+                  arrayQuest[round].category
+                }
+              </Typography>
+              <Typography
+                style={ { marginTop: '10px' } }
+                variant="h6"
+                data-testid="question-text"
+              >
+                {
+                  arrayQuest[round].question
+                }
+              </Typography>
+              <Box
+                data-testid="answer-options"
+                style={ { marginTop: '20px' } }
+              >
                 { this.answers().map((answer) => (answer)) }
-              </div>
-            </div>
+              </Box>
+              <NextButton
+                arrayQuest={ arrayQuest }
+                history={ history }
+                onClickAnswered={ this.onClickAnswered }
+              />
+            </Box>
           )}
-      </div>
+        <Footer />
+      </Box>
     );
   }
 }
