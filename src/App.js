@@ -12,7 +12,7 @@ export default function App() {
     <div>
       <Switch>
         <Route exact path="/" render={ (props) => <Home { ...props } /> } />
-        <Route exact path="/game" component={ Game } />
+        <Route exact path="/game" render={ (props) => <Game { ...props } /> } />
         <Route exact path="/settings" component={ Settings } />
         <Route exact path="/feedback" component={ Feedback } />
         <Route exact path="/ranking" component={ Ranking } />
