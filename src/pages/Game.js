@@ -11,6 +11,8 @@ import Timer from '../componets/Timer';
 import { clickAssertions, actionScore } from '../redux/actions/index';
 import NextButton from '../componets/NextButton';
 import Footer from '../componets/Footer';
+import heart from '../image/Hearth.gif';
+import Image from '../componets/Image';
 
 class Game extends Component {
   constructor() {
@@ -111,7 +113,20 @@ class Game extends Component {
       <Box>
         <Header />
         {loading
-          ? <Typography>carregando</Typography>
+          ? (
+            <Box
+              sx={ {
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: '100vw',
+                height: '80vh',
+              } }
+            >
+              <Image src={ heart } alt="loading" />
+            </Box>
+          )
           : (
             <Box
               sx={ {
@@ -138,6 +153,7 @@ class Game extends Component {
 
               <Typography
                 variant="h4"
+                style={ { fontWeight: 'bold' } }
                 data-testid="question-category"
               >
                 {
