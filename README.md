@@ -1,5 +1,6 @@
 # :construction: README customizado em construção ! :construction:
 ### 09/05/2023 - Inicio das alterações no projeto.
+### 10/05/2023 - Refatorando projeto para react func.
 <!-- Olá, Tryber!
 Esse é apenas um arquivo inicial para o README do seu projeto no qual você pode customizar e reutilizar todas as vezes que for executar o trybe-publisher.
 
