@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -6,82 +6,82 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Image from './Image';
 import { actionPicture } from '../redux/actions';
+import useQueryMedia from '../hook/useQueryMedia';
 
-class Header extends Component {
-  constructor() {
-    super();
-    this.state = {
-      picture: '',
+function Header({ userName, score, email, setPictures }) {
+  const [picture, setPicture] = useState('');
+
+  useEffect(() => {
+    const getPictureGravatar = async () => {
+      const emailCrpyto = md5(email).toString();
+      const url = `https://www.gravatar.com/avatar/${emailCrpyto}`;
+      setPictures(url);
+      setPicture(url);
     };
-  }
+    getPictureGravatar();
+  }, [email, setPictures]);
 
-  componentDidMount() {
-    this.getPictureGravatar();
-  }
+  const isSmallScreen = useQueryMedia();
 
-  getPictureGravatar = async () => {
-    const { email, setPictures } = this.props;
-    const emailCrpyto = md5(email).toString();
-    const url = `https://www.gravatar.com/avatar/${emailCrpyto}`;
-    setPictures(url);
-    this.setState({ picture: url });
-  }
-
-  render() {
-    const { userName, score } = this.props;
-    const { picture } = this.state;
-
-    return (
+  return (
+    <Box
+      sx={ {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        bgcolor: 'black',
+        color: 'white',
+      } }
+    >
       <Box
         sx={ {
           display: 'flex',
           flexDirection: 'row',
-          justifyContent: 'space-between',
-          bgcolor: 'black',
-          color: 'white',
+          justifyContent: 'center',
+          alignItems: 'center',
         } }
       >
-        <Box
-          sx={ {
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-          } }
+        <Image src={ picture } alt={ userName } />
+        <Typography
+          variant="h5"
+          style={ { textAlign: 'center', marginLeft: '20px' } }
+          data-testid="header-score"
         >
-          <Image src={ picture } alt={ userName } />
-          <Typography
-            variant="h5"
-            style={ { textAlign: 'center', marginLeft: '20px' } }
-            data-testid="header-score"
-          >
-            {
-              `Score: ${score}`
-            }
-          </Typography>
-        </Box>
-        <Box
-          sx={ {
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-          } }
-        >
-          <Typography
-            data-testid="header-player-name"
-            variant="h4"
-            style={ { textAlign: 'center', marginRight: '30px' } }
-          >
-            {
-              localStorage.getItem('name') || ''
-            }
-          </Typography>
-        </Box>
+          {
+            `Score: ${score}`
+          }
+        </Typography>
       </Box>
-    );
-  }
+      <Box
+        sx={ {
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+        } }
+      >
+        <Typography
+          data-testid="header-player-name"
+          variant={ isSmallScreen ? 'h4' : 'h6' }
+          sx={ {
+            fontSize: {
+              lg: '5rem',
+              md: '4rem',
+              sm: '3rem',
+              xs: '2rem',
+            },
+          } }
+          style={ { textAlign: 'center', marginRight: '30px' } }
+        >
+          {
+            localStorage.getItem('name') || ''
+          }
+        </Typography>
+      </Box>
+    </Box>
+  );
 }
+
 const mapStateToProps = (state) => ({
   userName: state.player.name,
   score: state.player.score,
