@@ -30,16 +30,7 @@ function Players() {
                   width: '20vw',
                 } }
               >
-                <Avatar
-                  style={ {
-                    background: 'black',
-                    color: 'white',
-                  } }
-                >
-                  {
-                    name.split('')[0]?.toUpperCase()
-                  }
-                </Avatar>
+                <Avatar src={ picture } alt="gravatar" />
                 <Typography
                   data-testid={ `player-name-${index}` }
                 >
