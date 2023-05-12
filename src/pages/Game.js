@@ -74,21 +74,19 @@ class Game extends Component {
     console.log(round);
     const correctAnswer = (
       <Button
-        disableElevation
         data-testid="correct-answer"
-        name={ arrayQuest[round].correct_answer }
+        name={ arrayQuest[round]?.correct_answer }
         type="button"
         variant="contained"
         style={ { background: answered ? '#35a02a' : '' } }
         onClick={ this.handleClick }
         disabled={ isTimeOut }
       >
-        {arrayQuest[round].correct_answer}
+        {arrayQuest[round]?.correct_answer}
       </Button>
     );
-    const incorrectAnswers = arrayQuest[round].incorrect_answers.map((answer, index) => (
+    const incorrectAnswers = arrayQuest[round]?.incorrect_answers.map((answer, index) => (
       <Button
-        disableElevation
         key={ index }
         type="button"
         variant="contained"
@@ -102,8 +100,9 @@ class Game extends Component {
     ));
 
     const AnswersArr = [...incorrectAnswers, correctAnswer];
+    console.log(AnswersArr);
     const SHUFFLE = 0.5;
-    const sortedAnswers = AnswersArr.sort(() => Math.random() - SHUFFLE);
+    const sortedAnswers = AnswersArr?.sort(() => Math.random() - SHUFFLE);
     return sortedAnswers;
   }
 
@@ -162,7 +161,7 @@ class Game extends Component {
                 data-testid="question-category"
               >
                 {
-                  arrayQuest[round].category
+                  arrayQuest[round]?.category
                 }
               </Typography>
               <Typography
@@ -171,14 +170,14 @@ class Game extends Component {
                 data-testid="question-text"
               >
                 {
-                  arrayQuest[round].question
+                  arrayQuest[round]?.question
                 }
               </Typography>
               <Box
                 data-testid="answer-options"
                 style={ { marginTop: '20px' } }
               >
-                { this.answers().map((answer) => (answer)) }
+                { this.answers() && this.answers().map((answer) => (answer)) }
               </Box>
               <NextButton
                 arrayQuest={ arrayQuest }
