@@ -55,12 +55,14 @@ class Game extends Component {
   }
 
   handleClick = ({ target }) => {
-    const { rightAnswer } = this.props;
+    const { rightAnswer, round } = this.props;
+    const { arrayQuest } = this.state;
     this.setState({
       answered: true,
     });
+    console.log(target.innerHTML);
     // https://stackoverflow.com/questions/58877215/else-path-not-taken-in-unit-testing
-    /* istanbul ignore else */ if (target.name === 'correct') {
+    /* istanbul ignore else */if (target.innerHTML === arrayQuest[round].correct_answer) {
       rightAnswer();
       this.calculateScore();
     }
@@ -69,10 +71,12 @@ class Game extends Component {
   answers = () => {
     const { arrayQuest, answered } = this.state;
     const { isTimeOut, round } = this.props;
+    console.log(round);
     const correctAnswer = (
       <Button
+        disableElevation
         data-testid="correct-answer"
-        name="correct"
+        name={ arrayQuest[round].correct_answer }
         type="button"
         variant="contained"
         style={ { background: answered ? '#35a02a' : '' } }
@@ -84,6 +88,7 @@ class Game extends Component {
     );
     const incorrectAnswers = arrayQuest[round].incorrect_answers.map((answer, index) => (
       <Button
+        disableElevation
         key={ index }
         type="button"
         variant="contained"
