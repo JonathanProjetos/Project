@@ -55,12 +55,14 @@ class Game extends Component {
   }
 
   handleClick = ({ target }) => {
-    const { rightAnswer } = this.props;
+    const { rightAnswer, round } = this.props;
+    const { arrayQuest } = this.state;
     this.setState({
       answered: true,
     });
+    console.log(target.innerHTML);
     // https://stackoverflow.com/questions/58877215/else-path-not-taken-in-unit-testing
-    /* istanbul ignore else */ if (target.name === 'correct') {
+    /* istanbul ignore else */if (target.innerHTML === arrayQuest[round].correct_answer) {
       rightAnswer();
       this.calculateScore();
     }
@@ -69,20 +71,21 @@ class Game extends Component {
   answers = () => {
     const { arrayQuest, answered } = this.state;
     const { isTimeOut, round } = this.props;
+    console.log(round);
     const correctAnswer = (
       <Button
         data-testid="correct-answer"
-        name="correct"
+        name={ arrayQuest[round]?.correct_answer }
         type="button"
         variant="contained"
         style={ { background: answered ? '#35a02a' : '' } }
         onClick={ this.handleClick }
         disabled={ isTimeOut }
       >
-        {arrayQuest[round].correct_answer}
+        {arrayQuest[round]?.correct_answer}
       </Button>
     );
-    const incorrectAnswers = arrayQuest[round].incorrect_answers.map((answer, index) => (
+    const incorrectAnswers = arrayQuest[round]?.incorrect_answers.map((answer, index) => (
       <Button
         key={ index }
         type="button"
@@ -97,8 +100,9 @@ class Game extends Component {
     ));
 
     const AnswersArr = [...incorrectAnswers, correctAnswer];
+    console.log(AnswersArr);
     const SHUFFLE = 0.5;
-    const sortedAnswers = AnswersArr.sort(() => Math.random() - SHUFFLE);
+    const sortedAnswers = AnswersArr?.sort(() => Math.random() - SHUFFLE);
     return sortedAnswers;
   }
 
@@ -157,7 +161,7 @@ class Game extends Component {
                 data-testid="question-category"
               >
                 {
-                  arrayQuest[round].category
+                  arrayQuest[round]?.category
                 }
               </Typography>
               <Typography
@@ -166,14 +170,14 @@ class Game extends Component {
                 data-testid="question-text"
               >
                 {
-                  arrayQuest[round].question
+                  arrayQuest[round]?.question
                 }
               </Typography>
               <Box
                 data-testid="answer-options"
                 style={ { marginTop: '20px' } }
               >
-                { this.answers().map((answer) => (answer)) }
+                { this.answers() && this.answers().map((answer) => (answer)) }
               </Box>
               <NextButton
                 arrayQuest={ arrayQuest }

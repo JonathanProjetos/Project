@@ -8,7 +8,7 @@ class Timer extends Component {
     super();
 
     this.state = {
-      timer: 30,
+      timer: 60,
     };
   }
 

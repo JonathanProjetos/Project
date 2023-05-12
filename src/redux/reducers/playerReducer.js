@@ -11,7 +11,7 @@ const INITIAL_STATE = {
   gravatarEmail: '',
   token: '',
   timeOut: false,
-  timer: 30,
+  timer: 60,
   round: 0,
   picture: '',
   isButtonRender: false,
