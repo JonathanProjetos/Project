@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
-import Image from './Image';
-import { actionPicture } from '../redux/actions';
+import Avatar from '@material-ui/core/Avatar';
 import useQueryMedia from '../hook/useQueryMedia';
+import { actionPicture } from '../redux/actions';
 
-function Header({ userName, score, email, setPictures }) {
+function Header({ score, email, setPictures }) {
   const [picture, setPicture] = useState('');
 
   useEffect(() => {
@@ -41,7 +41,20 @@ function Header({ userName, score, email, setPictures }) {
           alignItems: 'center',
         } }
       >
-        <Image src={ picture } alt={ userName } />
+        {/* <Image src={ picture } alt={ userName } /> */}
+        {
+          <Avatar
+            src={ picture }
+            alt="Foto da pessoa"
+            style={ {
+              width: '80px',
+              height: '80px',
+              marginTop: '10px',
+              marginBottom: '10px',
+              marginLeft: '5px',
+            } }
+          />
+        }
         <Typography
           variant="h5"
           style={ { textAlign: 'center', marginLeft: '20px' } }
@@ -83,7 +96,6 @@ function Header({ userName, score, email, setPictures }) {
 }
 
 const mapStateToProps = (state) => ({
-  userName: state.player.name,
   score: state.player.score,
   email: state.player.gravatarEmail,
 });
@@ -93,7 +105,6 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 Header.propTypes = {
-  userName: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
   email: PropTypes.string.isRequired,
   setPictures: PropTypes.func.isRequired,
