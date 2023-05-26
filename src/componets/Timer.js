@@ -1,57 +1,44 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import { timeOver } from '../redux/actions';
 
-class Timer extends Component {
-  constructor() {
-    super();
+const SIXTY = 60;
 
-    this.state = {
-      timer: 60,
-    };
-  }
+function Timer({ timeOutSet }) {
+  const history = useHistory();
 
-  componentDidMount() {
-    this.startTimer();
-  }
+  const [timer, setTimer] = useState(SIXTY);
+  const [countInterval, setCountInterval] = useState(null);
 
-  componentDidUpdate() {
-    const { timer } = this.state;
-    const { timeOutSet } = this.props;
-    const { propsGame } = this.props;
-    const { history } = propsGame;
+  const startTimer = () => {
+    const ONE_SECOND = 1000;
+    const timesInterval = setInterval(() => {
+      setTimer((prev) => prev - 1);
+    }, ONE_SECOND);
+    setCountInterval(timesInterval);
+  };
+
+  useEffect(() => {
+    startTimer();
+  }, []);
+
+  useEffect(() => {
     if (timer === 0) {
-      clearInterval(this.countInterval);
+      clearInterval(countInterval);
       timeOutSet();
       history.push('/feedback');
     }
-  }
+  }, [timer]);
 
-  startTimer = () => {
-    const ONE_SECOND = 1000;
-    this.countInterval = setInterval(() => {
-      this.setState((state) => ({
-        timer: state.timer - 1,
-      }));
-    }, ONE_SECOND);
-  }
-
-  render() {
-    const { timer } = this.state;
-    return (
-      <h2>{timer}</h2>
-    );
-  }
+  return (
+    <h2>{timer}</h2>
+  );
 }
 
 Timer.propTypes = {
   timeOutSet: PropTypes.func.isRequired,
-  propsGame: PropTypes.shape({
-    history: PropTypes.shape({
-      push: PropTypes.func.isRequired,
-    }).isRequired,
-  }).isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
