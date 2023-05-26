@@ -1,16 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
+import { useHistory } from 'react-router-dom';
 import { resetState } from '../redux/actions';
 import Footer from '../componets/Footer';
 import Players from '../componets/Players';
 import useQueryMedia from '../hook/useQueryMedia';
+import heart from '../image/Hearth.gif';
+import Image from '../componets/Image';
 
-function Ranking({ reset, history }) {
+function Ranking({ reset }) {
   const isSmallScreen = useQueryMedia();
+  const history = useHistory();
+
+  const [loading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const delay = 2000; // 2 segundos
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, delay);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <Box
       sx={ {
@@ -31,7 +47,22 @@ function Ranking({ reset, history }) {
       >
         Ranking
       </Typography>
-      <Players />
+      {loading ? (
+        <Box
+          sx={ {
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '100vw',
+            height: '60vh',
+          } }
+        >
+          <Image src={ heart } alt="loading" />
+        </Box>
+      ) : (
+        <Players />
+      )}
       <Button
         type="button"
         style={ { background: 'black', color: 'white', marginBottom: '100px' } }

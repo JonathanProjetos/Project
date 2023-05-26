@@ -1,13 +1,15 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
+import { useHistory } from 'react-router-dom';
 import { actionNextQuestion } from '../redux/actions/index';
 
-class NextButton extends Component {
-  HandleClickNextButton = () => {
-    const { round, nextButton, onClickAnswered, score, userName, picture } = this.props;
+function NextButton({ round, nextButton, onClickAnswered, score, userName, picture }) {
+  const history = useHistory();
+
+  const HandleClickNextButton = () => {
     const NUMBER = 4;
     // https://stackoverflow.com/questions/58877215/else-path-not-taken-in-unit-testing
     /* istanbul ignore else */ if (round <= NUMBER) {
@@ -15,29 +17,27 @@ class NextButton extends Component {
     }
 
     if (round === NUMBER) {
-      const { history } = this.props;
+      // const { history } = this.props;
       const ranking = JSON.parse(localStorage.getItem('ranking')) || [];
       const rankPlayer = [...ranking, { name: userName, score, picture }];
       localStorage.setItem('ranking', JSON.stringify(rankPlayer));
       history.push('/feedback');
     }
     onClickAnswered();
-  }
+  };
 
-  render() {
-    return (
-      <Box>
-        <Button
-          type="button"
-          data-testid="btn-next"
-          style={ { background: 'black', color: 'white', marginTop: '50px' } }
-          onClick={ this.HandleClickNextButton }
-        >
-          Next
-        </Button>
-      </Box>
-    );
-  }
+  return (
+    <Box>
+      <Button
+        type="button"
+        data-testid="btn-next"
+        style={ { background: 'black', color: 'white', marginTop: '50px' } }
+        onClick={ HandleClickNextButton }
+      >
+        Next
+      </Button>
+    </Box>
+  );
 }
 
 NextButton.propTypes = {
