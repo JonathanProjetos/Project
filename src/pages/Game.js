@@ -6,7 +6,6 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Header from '../componets/Header';
 import fetchQuest from '../helper/fetchQuest';
-import '../css/game.css';
 import Timer from '../componets/Timer';
 import { clickAssertions, actionScore } from '../redux/actions/index';
 import NextButton from '../componets/NextButton';
@@ -14,8 +13,11 @@ import Footer from '../componets/Footer';
 import heart from '../image/Hearth.gif';
 import Image from '../componets/Image';
 import isSmallScreen from '../hook/useQueryMedia';
+import { useHistory } from 'react-router-dom';
 
-function Game({ upTimer, getScore, setScore, round, history, rightAnswer, isTimeOut }) {
+function Game({ upTimer, getScore, setScore, round, rightAnswer, isTimeOut }) {
+  const history = useHistory();
+
   const [arrayQuest, setArrayQuest] = useState([]);
   const [answered, setAnswered] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -23,6 +25,7 @@ function Game({ upTimer, getScore, setScore, round, history, rightAnswer, isTime
 
   useEffect(() => {
     getQuestion()
+
   },[])
 
 
@@ -51,7 +54,6 @@ function Game({ upTimer, getScore, setScore, round, history, rightAnswer, isTime
 
   const handleClick = ({ target }) => {
     setAnswered(true);
-    console.log(target.innerHTML);
     // https://stackoverflow.com/questions/58877215/else-path-not-taken-in-unit-testing
     /* istanbul ignore else */if (target.innerHTML === arrayQuest[round].correct_answer) {
       rightAnswer();
@@ -60,20 +62,21 @@ function Game({ upTimer, getScore, setScore, round, history, rightAnswer, isTime
   };
 
   const answers = () => {
-    console.log(round);
     const correctAnswer = (
       <Button
+        key="correct"
         data-testid="correct-answer"
         name={ arrayQuest[round]?.correct_answer }
         type="button"
         variant="contained"
-        style={ { background: answered ? '#35a02a' : '' } }
+        style={ { background: answered ? '#35a02a' : '', margin: '4px' } }
         onClick={ handleClick }
         disabled={ isTimeOut }
       >
         {arrayQuest[round]?.correct_answer}
       </Button>
     );
+    
     const incorrectAnswers = arrayQuest[round]?.incorrect_answers.map((answer, index) => (
       <Button
         key={ index }
@@ -81,16 +84,17 @@ function Game({ upTimer, getScore, setScore, round, history, rightAnswer, isTime
         variant="contained"
         disabled={ isTimeOut }
         data-testid={ `wrong-answer-${index}` }
-        style={ { background: answered ? '#f14e31' : '' } }
+        style={ { background: answered ? '#f14e31' : '', margin: '4px' } }
         onClick={ handleClick }
       >
         {answer}
       </Button>
     ));
-
-    const AnswersArr = [...incorrectAnswers, correctAnswer];
+    
+    const verifyAnswers = incorrectAnswers !== undefined ? incorrectAnswers : window.location.reload();
+    const AnswersArr = [...verifyAnswers, correctAnswer];
     const SHUFFLE = 0.5;
-    const sortedAnswers = AnswersArr?.sort(() => Math.random() - SHUFFLE);
+    const sortedAnswers = AnswersArr.sort(() => Math.random() - SHUFFLE);
     return sortedAnswers;
   }
 
@@ -137,7 +141,7 @@ function Game({ upTimer, getScore, setScore, round, history, rightAnswer, isTime
                 fontSize: '50px',
               } }
             >
-              <Timer answered={ answered } propsGame={ history } />
+              <Timer answered={ answered } />
             </Box>
             <Typography
               variant="h4"
@@ -149,7 +153,14 @@ function Game({ upTimer, getScore, setScore, round, history, rightAnswer, isTime
               }
             </Typography>
             <Typography
-              style={ { marginTop: '10px' } }
+              style={ { 
+                marginTop: '10px',
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexWrap: 'wrap', 
+              } }
               variant="h6"
               data-testid="question-text"
             >
@@ -159,7 +170,7 @@ function Game({ upTimer, getScore, setScore, round, history, rightAnswer, isTime
             </Typography>
             <Box
               data-testid="answer-options"
-              style={ { marginTop: '20px' } }
+              style={{ marginTop: '20px' }}
             >
               { answers() && answers().map((answer) => (answer)) }
             </Box>
@@ -176,9 +187,6 @@ function Game({ upTimer, getScore, setScore, round, history, rightAnswer, isTime
 }
 
 Game.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
   isTimeOut: PropTypes.bool.isRequired,
   rightAnswer: PropTypes.func.isRequired,
   setScore: PropTypes.func.isRequired,
