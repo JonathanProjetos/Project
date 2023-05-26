@@ -1,141 +1,172 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import { useHistory } from 'react-router-dom';
 import Header from '../componets/Header';
 import { resetState } from '../redux/actions';
 import Footer from '../componets/Footer';
 import useQueryMedia from '../hook/useQueryMedia';
+import heart from '../image/Hearth.gif';
+import Image from '../componets/Image';
 
-function Feedback({ rightAnswer, score, assertions, history, reset }) {
+function Feedback({ rightAnswer, score, assertions, reset }) {
   const isSmallScreen = useQueryMedia();
   const NUMBER_THREE = 3;
+  const history = useHistory();
+
+  const [loading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const delay = 2000; // 2 segundos
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, delay);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <Box>
       <Header />
-      <Box
-        sx={ {
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: '100vw',
-          height: '80vh',
-        } }
-      >
+      {loading ? (
         <Box
           sx={ {
-            marginBottom: '40px',
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '100vw',
+            height: '60vh',
           } }
         >
-          {
-            rightAnswer < NUMBER_THREE ? (
-              <Typography
-                variant="h2"
-                data-testid="feedback-text"
-              >
-                Could be better...
-              </Typography>
-            ) : (
-              <Typography
-                variant="h3"
-                data-testid="feedback-text"
-              >
-                Well Done!
-              </Typography>
-            )
-          }
+          <Image src={ heart } alt="loading" />
         </Box>
+      ) : (
         <Box
           sx={ {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
+            width: '100vw',
+            height: '80vh',
           } }
         >
-          <Typography
-            variant="h4"
-            data-testid="feedback-total-score"
+          <Box
+            sx={ {
+              marginBottom: '40px',
+            } }
           >
-            {`Placar final: ${score}`}
-          </Typography>
-          <Typography
-            variant="h6"
-            data-testid="feedback-total-question"
+            {
+              rightAnswer < NUMBER_THREE ? (
+                <Typography
+                  variant="h3"
+                  data-testid="feedback-text"
+                >
+                  Could be better...
+                </Typography>
+              ) : (
+                <Typography
+                  variant="h3"
+                  data-testid="feedback-text"
+                >
+                  Well Done!
+                </Typography>
+              )
+            }
+          </Box>
+          <Box
+            sx={ {
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+            } }
           >
-            {`Você acertou: ${assertions}`}
-          </Typography>
-          {isSmallScreen ? (
-            <Box
-              sx={ {
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                marginTop: '40px',
-                width: '30vw',
-              } }
+            <Typography
+              variant="h4"
+              data-testid="feedback-total-score"
             >
-              <Button
-                type="button"
-                data-testid="btn-play-again"
-                style={ { background: 'black', color: 'white', marginRight: '20px' } }
-                onClick={ () => {
-                  reset();
-                  history.push('/');
-                } }
-              >
-                Play Again
-              </Button>
-              <Button
-                type="button"
-                data-testid="btn-ranking"
-                style={ { background: 'black', color: 'white' } }
-                onClick={ () => {
-                  history.push('/ranking');
-                } }
-              >
-                Ranking
-              </Button>
-            </Box>
-          ) : (
-            <Box
-              sx={ {
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                marginTop: '40px',
-                width: '20vw',
-              } }
+              {`Placar final: ${score}`}
+            </Typography>
+            <Typography
+              variant="h6"
+              data-testid="feedback-total-question"
             >
-              <Button
-                type="button"
-                data-testid="btn-play-again"
-                style={ { background: 'black', color: 'white', marginBottom: '20px' } }
-                onClick={ () => {
-                  reset();
-                  history.push('/');
+              {`Você acertou: ${assertions}`}
+            </Typography>
+            {isSmallScreen ? (
+              <Box
+                sx={ {
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  marginTop: '40px',
+                  width: '30vw',
                 } }
               >
-                Play Again
-              </Button>
-              <Button
-                type="button"
-                data-testid="btn-ranking"
-                style={ { background: 'black', color: 'white' } }
-                onClick={ () => {
-                  history.push('/ranking');
+                <Button
+                  type="button"
+                  data-testid="btn-play-again"
+                  style={ { background: 'black', color: 'white', marginRight: '20px' } }
+                  onClick={ () => {
+                    reset();
+                    history.push('/');
+                  } }
+                >
+                  Play Again
+                </Button>
+                <Button
+                  type="button"
+                  data-testid="btn-ranking"
+                  style={ { background: 'black', color: 'white' } }
+                  onClick={ () => {
+                    history.push('/ranking');
+                  } }
+                >
+                  Ranking
+                </Button>
+              </Box>
+            ) : (
+              <Box
+                sx={ {
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  marginTop: '40px',
+                  width: '20vw',
                 } }
               >
-                Ranking
-              </Button>
-            </Box>
-          )}
+                <Button
+                  type="button"
+                  data-testid="btn-play-again"
+                  style={ { background: 'black', color: 'white', marginBottom: '20px' } }
+                  onClick={ () => {
+                    reset();
+                    history.push('/');
+                  } }
+                >
+                  Play Again
+                </Button>
+                <Button
+                  type="button"
+                  data-testid="btn-ranking"
+                  style={ { background: 'black', color: 'white' } }
+                  onClick={ () => {
+                    history.push('/ranking');
+                  } }
+                >
+                  Ranking
+                </Button>
+              </Box>
+            )}
+          </Box>
         </Box>
-      </Box>
+      )}
+
       <Footer />
     </Box>
   );
