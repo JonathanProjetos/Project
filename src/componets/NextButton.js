@@ -6,7 +6,16 @@ import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
 import { actionNextQuestion } from '../redux/actions/index';
 
-function NextButton({ round, nextButton, onClickAnswered, score, userName, picture }) {
+function NextButton(props) {
+  const {
+    round,
+    nextButton,
+    onClickAnswered,
+    score,
+    userName,
+    picture,
+    setToggleButton } = props;
+
   const history = useHistory();
 
   const HandleClickNextButton = () => {
@@ -16,8 +25,9 @@ function NextButton({ round, nextButton, onClickAnswered, score, userName, pictu
       nextButton();
     }
 
+    setToggleButton(false);
+
     if (round === NUMBER) {
-      // const { history } = this.props;
       const ranking = JSON.parse(localStorage.getItem('ranking')) || [];
       const rankPlayer = [...ranking, { name: userName, score, picture }];
       localStorage.setItem('ranking', JSON.stringify(rankPlayer));
@@ -50,6 +60,7 @@ NextButton.propTypes = {
     push: PropTypes.func.isRequired,
   }).isRequired,
   onClickAnswered: PropTypes.func.isRequired,
+  setToggleButton: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({

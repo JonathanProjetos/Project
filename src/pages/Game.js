@@ -21,11 +21,11 @@ function Game({ upTimer, getScore, setScore, round, rightAnswer, isTimeOut }) {
   const [arrayQuest, setArrayQuest] = useState([]);
   const [answered, setAnswered] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [toggleButton, setToggleButton] = useState(false);
 
 
   useEffect(() => {
     getQuestion()
-
   },[])
 
 
@@ -53,6 +53,7 @@ function Game({ upTimer, getScore, setScore, round, rightAnswer, isTimeOut }) {
   }
 
   const handleClick = ({ target }) => {
+    setToggleButton(true)
     setAnswered(true);
     // https://stackoverflow.com/questions/58877215/else-path-not-taken-in-unit-testing
     /* istanbul ignore else */if (target.innerHTML === arrayQuest[round].correct_answer) {
@@ -71,7 +72,7 @@ function Game({ upTimer, getScore, setScore, round, rightAnswer, isTimeOut }) {
         variant="contained"
         style={ { background: answered ? '#35a02a' : '', margin: '4px' } }
         onClick={ handleClick }
-        disabled={ isTimeOut }
+        disabled={ toggleButton || isTimeOut }
       >
         {arrayQuest[round]?.correct_answer}
       </Button>
@@ -175,6 +176,7 @@ function Game({ upTimer, getScore, setScore, round, rightAnswer, isTimeOut }) {
               { answers() && answers().map((answer) => (answer)) }
             </Box>
             <NextButton
+              setToggleButton={ setToggleButton }
               arrayQuest={ arrayQuest }
               history={ history }
               onClickAnswered={ onClickAnswered }
