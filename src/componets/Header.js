@@ -56,7 +56,7 @@ function Header({ score, email, setPictures }) {
           />
         }
         <Typography
-          variant="h5"
+          variant="h6"
           style={ { textAlign: 'center', marginLeft: '20px' } }
           data-testid="header-score"
         >
