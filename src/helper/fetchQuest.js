@@ -20,7 +20,12 @@ const fetchQuest = async (token) => {
       type } = item;
 
     const utf8Text = he.decode(question);
+    const utf8TextCorrectAnswer = he.decode(correct_answer);
+    const utf8TextIncorrectAnswers = incorrect_answers.map((answer) => he.decode(answer));
     const text = utf8Text.split(' ,')[0];
+
+    incorrect_answers = utf8TextIncorrectAnswers;
+    correct_answer = utf8TextCorrectAnswer;
     question = text;
     return { question, category, correct_answer, difficulty, incorrect_answers, type };
   });
