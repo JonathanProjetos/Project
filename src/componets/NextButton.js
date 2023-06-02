@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
-import { actionNextQuestion } from '../redux/actions/index';
+import { actionNextQuestion, actionShuffle } from '../redux/actions/index';
 
 function NextButton(props) {
   const {
@@ -14,6 +14,7 @@ function NextButton(props) {
     score,
     userName,
     picture,
+    shuffleButton,
     setToggleButton } = props;
 
   const history = useHistory();
@@ -23,7 +24,10 @@ function NextButton(props) {
     // https://stackoverflow.com/questions/58877215/else-path-not-taken-in-unit-testing
     /* istanbul ignore else */ if (round <= NUMBER) {
       nextButton();
+      // shuffleButton();
     }
+
+    shuffleButton(true);
 
     setToggleButton(false);
 
@@ -56,6 +60,7 @@ NextButton.propTypes = {
   userName: PropTypes.string.isRequired,
   picture: PropTypes.string.isRequired,
   nextButton: PropTypes.func.isRequired,
+  shuffleButton: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
@@ -72,6 +77,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   nextButton: () => dispatch(actionNextQuestion()),
+  shuffleButton: (boolean) => dispatch(actionShuffle(boolean)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NextButton);

@@ -22,7 +22,7 @@ const fetchQuest = async (token) => {
     const utf8Text = he.decode(question);
     const utf8TextCorrectAnswer = he.decode(correct_answer);
     const utf8TextIncorrectAnswers = incorrect_answers.map((answer) => he.decode(answer));
-    console.log(utf8Text);
+    // console.log(utf8Text);
 
     incorrect_answers = utf8TextIncorrectAnswers;
     correct_answer = utf8TextCorrectAnswer;
