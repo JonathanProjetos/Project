@@ -8,6 +8,7 @@ export const NEXT_GAME = 'NEXT_GAME';
 export const RENDER_BUTTON = 'RENDER_BUTTON';
 export const RESET_STATE = 'RESET_STATE';
 export const SET_PICTURE = 'SET_PICTURE';
+export const SHUFFLE = 'SHUFFLE';
 
 export const actionSetUser = ({ name, email }) => ({
   type: SET_USER,
@@ -55,4 +56,9 @@ export const resetState = () => ({
 export const actionPicture = (picture) => ({
   type: SET_PICTURE,
   payload: picture,
+});
+
+export const actionShuffle = (boolean) => ({
+  type: SHUFFLE,
+  payload: boolean,
 });

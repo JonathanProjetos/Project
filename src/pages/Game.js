@@ -14,21 +14,23 @@ import heart from '../image/Hearth.gif';
 import Image from '../componets/Image';
 import isSmallScreen from '../hook/useQueryMedia';
 import { useHistory } from 'react-router-dom';
+import { actionShuffle } from '../redux/actions/index';
 
-function Game({ upTimer, getScore, setScore, round, rightAnswer, isTimeOut }) {
+function Game({ upTimer, getScore, setScore, round, rightAnswer, isTimeOut, shuffler, shuffleButton }) {
   const history = useHistory();
 
   const [arrayQuest, setArrayQuest] = useState([]);
   const [answered, setAnswered] = useState(false);
   const [loading, setLoading] = useState(true);
   const [toggleButton, setToggleButton] = useState(false);
-
+  // const [shufflerQuestion, setShufflerQuestion] = useState([]);
 
   useEffect(() => {
     getQuestion()
+    shuffleButton(true)
   },[])
 
-
+  
   const getQuestion = async () => {
     const token = localStorage.getItem('token');
     const results = await fetchQuest(token);
@@ -40,7 +42,7 @@ function Game({ upTimer, getScore, setScore, round, rightAnswer, isTimeOut }) {
       history.push('/');
     }
   }
-
+  
   const calculateScore = () => {
     const level = arrayQuest[round].difficulty;
     let numDifficulty;
@@ -51,9 +53,10 @@ function Game({ upTimer, getScore, setScore, round, rightAnswer, isTimeOut }) {
     const score = getScore + HIT + (upTimer * numDifficulty);
     setScore(score);
   }
-
+  
   const handleClick = ({ target }) => {
     setToggleButton(true)
+    shuffleButton(false)
     setAnswered(true);
     // https://stackoverflow.com/questions/58877215/else-path-not-taken-in-unit-testing
     /* istanbul ignore else */if (target.innerHTML === arrayQuest[round].correct_answer) {
@@ -61,6 +64,7 @@ function Game({ upTimer, getScore, setScore, round, rightAnswer, isTimeOut }) {
       calculateScore();
     }
   };
+  
 
   const answers = () => {
     const correctAnswer = (
@@ -94,9 +98,10 @@ function Game({ upTimer, getScore, setScore, round, rightAnswer, isTimeOut }) {
     
     const verifyAnswers = incorrectAnswers !== undefined ? incorrectAnswers : window.location.reload();
     const AnswersArr = [...verifyAnswers, correctAnswer];
-    const SHUFFLE = 0.5;
-    const sortedAnswers = AnswersArr.sort(() => Math.random() - SHUFFLE);
-    return sortedAnswers;
+    const shufflerData =  AnswersArr.sort(() => Math.random() - 0.5);
+
+    return shufflerData;
+    
   }
 
   const onClickAnswered = () => {
@@ -173,7 +178,7 @@ function Game({ upTimer, getScore, setScore, round, rightAnswer, isTimeOut }) {
               data-testid="answer-options"
               style={{ marginTop: '20px' }}
             >
-              { answers() && answers().map((answer) => (answer)) }
+              { answers().map((answer) => (answer)) }
             </Box>
             <NextButton
               setToggleButton={ setToggleButton }
@@ -195,6 +200,7 @@ Game.propTypes = {
   upTimer: PropTypes.number.isRequired,
   getScore: PropTypes.number.isRequired,
   round: PropTypes.number.isRequired,
+  shuffleButton: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -202,11 +208,14 @@ const mapStateToProps = (state) => ({
   upTimer: state.player.timer,
   getScore: state.player.score,
   round: state.player.round,
+  shuffler: state.player.shuffle,
+  // shuffleButton: state.player.shuffle,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   rightAnswer: () => dispatch(clickAssertions()),
   setScore: (score) => dispatch(actionScore(score)),
+  shuffleButton: (boolean) => dispatch(actionShuffle(boolean)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
