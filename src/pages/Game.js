@@ -17,6 +17,7 @@ import Image from '../componets/Image';
 import isSmallScreen from '../hook/useQueryMedia';
 import Shuffler from '../componets/Shuffler';
 import CalculateScore from '../componets/CalculateScore';
+import Redirect from '../componets/Redirect';
 
 function Game(props) {
   const {
@@ -80,7 +81,7 @@ function Game(props) {
 
   return (
     <Box>
-      <Header />
+      <Header shufflerQuestion={ shufflerQuestion } />
       {loading
         ? (
           <Box
@@ -144,34 +145,40 @@ function Game(props) {
                 arrayQuest[round]?.question
               }
             </Typography>
-            <Box
-              data-testid="answer-options"
-              style={ { marginTop: '20px' } }
-            >
-              { shufflerQuestion && shufflerQuestion.map((question, index) => (
-                <Button
-                  key={ index }
-                  type="button"
-                  variant="contained"
-                  disabled={ isTimeOut || toggleButton }
-                  data-testid={ `wrong-answer-${index}` }
-                  style={ { background: !shuffler
-                    ? question === arrayQuest[round]?.correct_answer
-                      ? 'green' : 'red'
-                    : '',
-                  margin: '4px' } }
-                  onClick={ () => handleClick(index) }
-                >
-                  {question}
-                </Button>
-              )) }
-            </Box>
-            <NextButton
-              setToggleButton={ setToggleButton }
-              arrayQuest={ arrayQuest }
-              history={ history }
-              onClickAnswered={ onClickAnswered }
-            />
+            { shufflerQuestion.length > 0 ? (
+              <Box
+                data-testid="answer-options"
+                style={ { marginTop: '20px' } }
+              >
+                { shufflerQuestion && shufflerQuestion.map((question, index) => (
+                  <Button
+                    key={ index }
+                    type="button"
+                    variant="contained"
+                    disabled={ isTimeOut || toggleButton }
+                    data-testid={ `wrong-answer-${index}` }
+                    style={ { background: !shuffler
+                      ? question === arrayQuest[round]?.correct_answer
+                        ? 'green' : 'red'
+                      : '',
+                    margin: '4px' } }
+                    onClick={ () => handleClick(index) }
+                  >
+                    {question}
+                  </Button>
+
+                )) }
+                <NextButton
+                  setToggleButton={ setToggleButton }
+                  arrayQuest={ arrayQuest }
+                  history={ history }
+                  onClickAnswered={ onClickAnswered }
+                />
+              </Box>
+            ) : (
+              <Redirect />
+            ) }
+
           </Box>
         )}
       {isSmallScreen() && (<Footer />)}
