@@ -48,6 +48,7 @@ function Login({ setToken, setUser }) {
     setToken(token);
     setUser({ email, name });
     localStorage.setItem('name', name);
+    localStorage.setItem('gravatarEmail', email);
     history.push('/game');
   };
 
@@ -113,7 +114,7 @@ function Login({ setToken, setUser }) {
             data-testid="btn-play"
             disabled={ isDisabled }
           >
-            {isDisabled ? 'Close' : 'Vamos Jogar?'}
+            {isDisabled ? 'Close' : 'let\'s play' }
           </Button>
         </Box>
       </Box>

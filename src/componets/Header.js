@@ -8,18 +8,20 @@ import Avatar from '@material-ui/core/Avatar';
 import useQueryMedia from '../hook/useQueryMedia';
 import { actionPicture } from '../redux/actions';
 
-function Header({ score, email, setPictures }) {
+function Header({ score, email, setPictures, shufflerQuestion }) {
   const [picture, setPicture] = useState('');
-
+  console.log(shufflerQuestion);
   useEffect(() => {
-    const getPictureGravatar = async () => {
-      const emailCrpyto = md5(email).toString();
+    const getPictureGravatar = () => {
+      const emailPerson = localStorage.getItem('gravatarEmail') || email;
+      const emailCrpyto = md5(emailPerson).toString();
       const url = `https://www.gravatar.com/avatar/${emailCrpyto}`;
       setPictures(url);
       setPicture(url);
+      localStorage.setItem('picture', url);
     };
     getPictureGravatar();
-  }, [email, setPictures]);
+  }, [email, setPictures, shufflerQuestion]);
 
   const isSmallScreen = useQueryMedia();
 
@@ -44,7 +46,7 @@ function Header({ score, email, setPictures }) {
         {/* <Image src={ picture } alt={ userName } /> */}
         {
           <Avatar
-            src={ picture }
+            src={ picture || localStorage.getItem('picture') }
             alt="Foto da pessoa"
             style={ {
               width: '80px',
@@ -108,6 +110,7 @@ Header.propTypes = {
   score: PropTypes.number.isRequired,
   email: PropTypes.string.isRequired,
   setPictures: PropTypes.func.isRequired,
+  shufflerQuestion: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);
