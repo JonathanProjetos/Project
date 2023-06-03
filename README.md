@@ -39,6 +39,14 @@ cd Trivia
 npm install
 npm start
 ```
+### Comportamento esperado
+  - Para inicializar, será necessário informar um nome com a soma dos caracteres maior que 6 e um e-mail válido no formato test@test.com.
+  - Quando acessar a página do jogo, o contador será iniciado. Você terá 1 minuto para concluir todas as 5 questões. Caso o tempo expire, você será redirecionado para a página de feedback.
+  - Cada questão pode ser selecionada apenas uma vez, sendo necessário clicar no botão "Next" para receber uma nova pergunta. A pontuação pode variar com base no nível de dificuldade estabelecido       na API que é consumida pela aplicação. Os níveis de dificuldade nesta aplicação podem ser difíceis, médios e fáceis. O cálculo da pontuação em função da dificuldade já está sendo feito dentro       da aplicação.
+  - Após a conclusão das perguntas, você será direcionado para a página de feedback, onde terá acesso ao resumo da partida. Nesta tela, você também poderá acessar o ranking e iniciar uma nova           partida.
+
+### Gravatar
+  - Você pode criar um perfil único vinculado ao seu e-mail no site do Gravatar. Isso permitirá que você tenha uma imagem de perfil associada ao seu endereço de e-mail neste [Link](https://br.gravatar.com/)
 ### Deploy
 - Foi realizado o deploy da aplicação no Vercel. Você pode acessar a aplicação através deste. [Link](https://trivia-nu-ten.vercel.app/).
 
