@@ -34,7 +34,7 @@ function Players() {
                 <Typography
                   data-testid={ `player-name-${index}` }
                 >
-                  {name}
+                  {name || localStorage.getItem('name')}
                 </Typography>
                 <Typography
                   data-testid={ `player-score-${index}` }
