@@ -1,36 +1,42 @@
-import React, {useEffect, useState} from 'react';
+/* eslint-disable no-nested-ternary */
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import { useHistory } from 'react-router-dom';
 import Header from '../componets/Header';
 import fetchQuest from '../helper/fetchQuest';
 import Timer from '../componets/Timer';
-import { clickAssertions, actionScore } from '../redux/actions/index';
+import { clickAssertions, actionScore, actionShuffle } from '../redux/actions/index';
 import NextButton from '../componets/NextButton';
 import Footer from '../componets/Footer';
 import heart from '../image/Hearth.gif';
 import Image from '../componets/Image';
 import isSmallScreen from '../hook/useQueryMedia';
-import { useHistory } from 'react-router-dom';
-import { actionShuffle } from '../redux/actions/index';
+import Shuffler from '../componets/Shuffler';
+import CalculateScore from '../componets/CalculateScore';
 
-function Game({ upTimer, getScore, setScore, round, rightAnswer, isTimeOut, shuffler, shuffleButton }) {
+function Game(props) {
+  const {
+    upTimer,
+    getScore,
+    setScore,
+    round,
+    rightAnswer,
+    isTimeOut,
+    shuffler,
+    shuffleButton } = props;
+
   const history = useHistory();
 
   const [arrayQuest, setArrayQuest] = useState([]);
   const [answered, setAnswered] = useState(false);
   const [loading, setLoading] = useState(true);
   const [toggleButton, setToggleButton] = useState(false);
-  // const [shufflerQuestion, setShufflerQuestion] = useState([]);
+  const [shufflerQuestion, setShufflerQuestion] = useState([]);
 
-  useEffect(() => {
-    getQuestion()
-    shuffleButton(true)
-  },[])
-
-  
   const getQuestion = async () => {
     const token = localStorage.getItem('token');
     const results = await fetchQuest(token);
@@ -41,72 +47,36 @@ function Game({ upTimer, getScore, setScore, round, rightAnswer, isTimeOut, shuf
       localStorage.setItem('token', '');
       history.push('/');
     }
-  }
-  
-  const calculateScore = () => {
-    const level = arrayQuest[round].difficulty;
-    let numDifficulty;
-    if (level === 'hard') numDifficulty = (2 + 1);
-    if (level === 'medium') numDifficulty = 2;
-    if (level === 'easy') numDifficulty = 1;
-    const HIT = 10;
-    const score = getScore + HIT + (upTimer * numDifficulty);
-    setScore(score);
-  }
-  
-  const handleClick = ({ target }) => {
-    setToggleButton(true)
-    shuffleButton(false)
+  };
+
+  useEffect(() => {
+    getQuestion();
+    shuffleButton(true);
+  }, []);
+
+  useEffect(() => {
+    if (arrayQuest[round]) {
+      const randomQuestions = Shuffler(arrayQuest, round);
+      setShufflerQuestion(randomQuestions);
+    }
+  }, [arrayQuest, round]);
+
+  const handleClick = (index) => {
+    setToggleButton(true);
+    shuffleButton(false);
     setAnswered(true);
+    const verifyAnswer = shufflerQuestion[index] === arrayQuest[round].correct_answer;
     // https://stackoverflow.com/questions/58877215/else-path-not-taken-in-unit-testing
-    /* istanbul ignore else */if (target.innerHTML === arrayQuest[round].correct_answer) {
+    if (verifyAnswer) {
       rightAnswer();
-      calculateScore();
+      const score = CalculateScore(arrayQuest, round, upTimer, getScore);
+      setScore(score);
     }
   };
-  
-
-  const answers = () => {
-    const correctAnswer = (
-      <Button
-        key="correct"
-        data-testid="correct-answer"
-        name={ arrayQuest[round]?.correct_answer }
-        type="button"
-        variant="contained"
-        style={ { background: answered ? '#35a02a' : '', margin: '4px' } }
-        onClick={ handleClick }
-        disabled={ toggleButton || isTimeOut }
-      >
-        {arrayQuest[round]?.correct_answer}
-      </Button>
-    );
-    
-    const incorrectAnswers = arrayQuest[round]?.incorrect_answers.map((answer, index) => (
-      <Button
-        key={ index }
-        type="button"
-        variant="contained"
-        disabled={ isTimeOut }
-        data-testid={ `wrong-answer-${index}` }
-        style={ { background: answered ? '#f14e31' : '', margin: '4px' } }
-        onClick={ handleClick }
-      >
-        {answer}
-      </Button>
-    ));
-    
-    const verifyAnswers = incorrectAnswers !== undefined ? incorrectAnswers : window.location.reload();
-    const AnswersArr = [...verifyAnswers, correctAnswer];
-    const shufflerData =  AnswersArr.sort(() => Math.random() - 0.5);
-
-    return shufflerData;
-    
-  }
 
   const onClickAnswered = () => {
     setAnswered(false);
-  }
+  };
 
   return (
     <Box>
@@ -159,13 +129,13 @@ function Game({ upTimer, getScore, setScore, round, rightAnswer, isTimeOut, shuf
               }
             </Typography>
             <Typography
-              style={ { 
+              style={ {
                 marginTop: '10px',
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'center',
                 alignItems: 'center',
-                flexWrap: 'wrap', 
+                flexWrap: 'wrap',
               } }
               variant="h6"
               data-testid="question-text"
@@ -176,9 +146,25 @@ function Game({ upTimer, getScore, setScore, round, rightAnswer, isTimeOut, shuf
             </Typography>
             <Box
               data-testid="answer-options"
-              style={{ marginTop: '20px' }}
+              style={ { marginTop: '20px' } }
             >
-              { answers().map((answer) => (answer)) }
+              { shufflerQuestion && shufflerQuestion.map((question, index) => (
+                <Button
+                  key={ index }
+                  type="button"
+                  variant="contained"
+                  disabled={ isTimeOut || toggleButton }
+                  data-testid={ `wrong-answer-${index}` }
+                  style={ { background: !shuffler
+                    ? question === arrayQuest[round]?.correct_answer
+                      ? 'green' : 'red'
+                    : '',
+                  margin: '4px' } }
+                  onClick={ () => handleClick(index) }
+                >
+                  {question}
+                </Button>
+              )) }
             </Box>
             <NextButton
               setToggleButton={ setToggleButton }
@@ -201,6 +187,7 @@ Game.propTypes = {
   getScore: PropTypes.number.isRequired,
   round: PropTypes.number.isRequired,
   shuffleButton: PropTypes.func.isRequired,
+  shuffler: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -209,7 +196,7 @@ const mapStateToProps = (state) => ({
   getScore: state.player.score,
   round: state.player.round,
   shuffler: state.player.shuffle,
-  // shuffleButton: state.player.shuffle,
+  shuffleButton: state.player.shuffle,
 });
 
 const mapDispatchToProps = (dispatch) => ({
