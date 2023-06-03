@@ -6,16 +6,12 @@ Trivia é um jogo de perguntas e respostas divertido e educativo. O objetivo é 
 
 ## Sumário
 - [Bem-vindo ao Trivia](#bem-vindo-ao-trivia)
-- [Contexto](#contexto)
 - [Tecnologias e Ferramentas Utilizadas](#tecnologias-e-ferramentas-utilizadas)
 - [Instalação e Execução](#instalação-e-execução)
 - [Deploy](#deploy)
 - [QRcode](#qrcode)
 - [Git, GitHub e Histórico de Commits](#git-github-e-histórico-de-commits)
 - [Lint](#lint)
-
-## Contexto
-
 
 ## Tecnologias e Ferramentas Utilizadas
 
