@@ -20,7 +20,7 @@ function NextButton(props) {
   const history = useHistory();
 
   const HandleClickNextButton = () => {
-    const NUMBER = 4;
+    const NUMBER = 9;
     // https://stackoverflow.com/questions/58877215/else-path-not-taken-in-unit-testing
     /* istanbul ignore else */ if (round <= NUMBER) {
       nextButton();
