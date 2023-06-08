@@ -10,7 +10,6 @@ import { actionPicture } from '../redux/actions';
 
 function Header({ score, email, setPictures, shufflerQuestion }) {
   const [picture, setPicture] = useState('');
-  console.log(shufflerQuestion);
   useEffect(() => {
     const getPictureGravatar = () => {
       const emailPerson = localStorage.getItem('gravatarEmail') || email;

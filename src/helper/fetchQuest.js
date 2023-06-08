@@ -3,7 +3,7 @@
 import he from 'he';
 
 const fetchQuest = async (token) => {
-  const URL = `https://opentdb.com/api.php?amount=5&token=${token}`;
+  const URL = `https://opentdb.com/api.php?amount=10&token=${token}`;
 
   const messageQuestion = await fetch(URL);
   const response = await messageQuestion.json();

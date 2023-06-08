@@ -14,7 +14,7 @@ import Image from '../componets/Image';
 
 function Feedback({ rightAnswer, score, assertions, reset }) {
   const isSmallScreen = useQueryMedia();
-  const NUMBER_THREE = 3;
+  const NUMBER_SIX = 6;
   const history = useHistory();
 
   const [loading, setIsLoading] = useState(true);
@@ -61,7 +61,7 @@ function Feedback({ rightAnswer, score, assertions, reset }) {
             } }
           >
             {
-              rightAnswer < NUMBER_THREE ? (
+              rightAnswer < NUMBER_SIX ? (
                 <Typography
                   variant="h3"
                   data-testid="feedback-text"
