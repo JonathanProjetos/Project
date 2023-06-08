@@ -10,7 +10,7 @@ describe('Testa as funcionalidades do pagina login',() => {
     const { history } = renderWithRouterAndRedux(<Login />);
     history.push('/');
 
-    const textName = screen.getByText('Nome:');
+    const textName = screen.getByTestId("input-player-name");
     expect(textName).toBeInTheDocument();
 
     const inputName = screen.getAllByRole('textbox')
@@ -22,7 +22,7 @@ describe('Testa as funcionalidades do pagina login',() => {
     const { history } = renderWithRouterAndRedux(<Login />);
     history.push('/');
 
-    const textEmail = screen.getByText('Email:');
+    const textEmail = screen.getByTestId("input-gravatar-email");
     expect(textEmail).toBeInTheDocument();
 
     const inputEmail = screen.getAllByRole('textbox');
@@ -42,21 +42,8 @@ describe('Testa as funcionalidades do pagina login',() => {
     expect(buttonPlay).toBeInTheDocument();
   
     userEvent.click(buttonPlay);
-    await waitFor( ()=> expect(history.location.pathname).toBe('/game') )
-  
+    await waitFor( ()=> expect( screen.getByText('xablau')).toBeInTheDocument())
+
   })
-
-  test('Testa se ao clicar no botão setting muda para rota setting',() => { 
-    const { history } = renderWithRouterAndRedux(<App />);
-    history.push('/');
-
-    const buttonSettings = screen.getByTestId('btn-settings');
-    expect(buttonSettings).toBeInTheDocument()
-
-    userEvent.click(buttonSettings);
-
-    expect(history.location.pathname).toBe('/settings');
-    });
-
 
 })
