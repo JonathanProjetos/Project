@@ -34,7 +34,7 @@ function Redirect() {
         style={ { background: 'black', color: 'white', marginTop: '50px' } }
         onClick={ () => history.push('/') }
       >
-        Inicio
+        Home
       </Button>
     </Box>
   );
