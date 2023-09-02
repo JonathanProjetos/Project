@@ -42,7 +42,7 @@ function Footer() {
         >
           Jonathan Santos
           <span>&copy;</span>
-          , 2022
+          , 2023
         </Box>
         <Box
           sx={ {
