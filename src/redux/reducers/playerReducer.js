@@ -1,8 +1,11 @@
+/* eslint-disable react-func/max-lines-per-function */
+
 import {
   SET_TOKEN,
   SET_USER, TIME_OVER,
   ASSERTIONS, NEXT_GAME,
-  RENDER_BUTTON, SET_TIMER, SET_SCORE, RESET_STATE, SET_PICTURE, SHUFFLE } from '../actions';
+  RENDER_BUTTON,
+  SET_TIMER, SET_SCORE, RESET_STATE, SET_PICTURE, SHUFFLE } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
