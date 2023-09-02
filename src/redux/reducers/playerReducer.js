@@ -1,5 +1,3 @@
-/* eslint-disable react-func/max-lines-per-function */
-
 import {
   SET_TOKEN,
   SET_USER, TIME_OVER,
