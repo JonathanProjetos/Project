@@ -69,6 +69,7 @@ function Ranking({ reset }) {
         data-testid="btn-go-home"
         onClick={ () => {
           reset();
+          localStorage.setItem('name', '');
           history.push('/');
         } }
       >
